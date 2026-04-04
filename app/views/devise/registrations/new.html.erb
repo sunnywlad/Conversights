@@ -1,19 +1,23 @@
-<h2>Sign up</h2>
+<h2 class="auth-heading">Create your account</h2>
+<p class="auth-heading-sub">Start listening to what the world says</p>
 
-<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
+<%= simple_form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "auth-form" }) do |f| %>
   <%= f.error_notification %>
 
   <div class="form-inputs">
     <%= f.input :email,
                 required: true,
                 autofocus: true,
-                input_html: { autocomplete: "email" }%>
+                placeholder: "you@company.com",
+                input_html: { autocomplete: "email" } %>
     <%= f.input :password,
                 required: true,
+                placeholder: "Create a password",
                 hint: ("#{@minimum_password_length} characters minimum" if @minimum_password_length),
                 input_html: { autocomplete: "new-password" } %>
     <%= f.input :password_confirmation,
                 required: true,
+                placeholder: "Confirm your password",
                 input_html: { autocomplete: "new-password" } %>
   </div>
 
@@ -22,4 +26,6 @@
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<div class="auth-links">
+  Already have an account? <%= link_to "Sign in", new_session_path(resource_name) %>
+</div>
