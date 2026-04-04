@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Conversights</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="auth-body">
+    <%= render "shared/flashes" %>
+    <div class="auth-container">
+      <div class="auth-left">
+        <div class="auth-branding">
+          <div class="auth-logo">
+            <span class="auth-logo-icon">C</span>
+            <span class="auth-logo-text">Conversights</span>
+          </div>
+          <h1 class="auth-tagline">Make sense of what the world says about your product.</h1>
+          <p class="auth-subtitle">Social listening intelligence for Product Managers. Track conversations across YouTube, Reddit, and X.</p>
+        </div>
+        <div class="auth-decoration">
+          <div class="auth-orb auth-orb-1"></div>
+          <div class="auth-orb auth-orb-2"></div>
+        </div>
+      </div>
+      <div class="auth-right">
+        <div class="auth-form-wrapper">
+          <%= yield %>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,155 @@
+.sidebar {
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  background: $white;
+  border-right: 1px solid $light-gray;
+  display: flex;
+  flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 100;
+  overflow-y: auto;
+}
+
+// Logo
+.sidebar-header {
+  padding: 1.25rem 1.25rem 0.75rem;
+}
+
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.sidebar-logo-icon {
+  width: 32px;
+  height: 32px;
+  background: $black;
+  color: $white;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.875rem;
+}
+
+.sidebar-logo-text {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: $black;
+  letter-spacing: -0.02em;
+}
+
+// Search
+.sidebar-search {
+  margin: 0.5rem 1rem 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid $light-gray;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  color: $gray;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.2s;
+
+  &:hover {
+    border-color: $medium-gray;
+  }
+}
+
+// Navigation
+.sidebar-nav {
+  flex: 1;
+  padding: 0.5rem 0;
+}
+
+.sidebar-nav-group {
+  padding: 0.25rem 0.75rem;
+
+  & + .sidebar-nav-group {
+    border-top: 1px solid $light-gray;
+    margin-top: 0.25rem;
+    padding-top: 0.5rem;
+  }
+}
+
+.sidebar-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.375rem;
+  color: $medium-gray;
+  font-size: 0.875rem;
+  font-weight: 400;
+  text-decoration: none;
+  transition: all 0.15s;
+  position: relative;
+
+  i:first-child {
+    width: 16px;
+    text-align: center;
+    font-size: 0.875rem;
+  }
+
+  &:hover {
+    background: $lighter-gray;
+    color: $black;
+  }
+
+  &.active {
+    background: $lighter-gray;
+    color: $black;
+    font-weight: 500;
+  }
+}
+
+.sidebar-nav-chevron {
+  margin-left: auto;
+  font-size: 0.625rem;
+  color: $gray;
+}
+
+// Section header (Projects)
+.sidebar-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: $gray;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.sidebar-add-btn {
+  width: 24px;
+  height: 24px;
+  border: none;
+  background: none;
+  color: $gray;
+  border-radius: 0.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.75rem;
+
+  &:hover {
+    background: $lighter-gray;
+    color: $black;
+  }
+}
+
+// Footer
+.sidebar-footer {
+  border-top: 1px solid $light-gray;
+  padding: 0.5rem 0.75rem 1rem;
+}
