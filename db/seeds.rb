@@ -7,3 +7,8 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
+Product.create!(name: "Kindle", brand: "Amazon", user_id: 1)
+Titles = "Sentiment général, Thème clef 1, Thème clef 2, Thème clef 3, Frustrations exprimées, Appréciation du design"
+Titles.split(", ").each do |title|
+  DashboardCard.create!(title: title, product_id: 1, content: "")
+end
