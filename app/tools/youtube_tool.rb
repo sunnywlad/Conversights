@@ -1,17 +1,17 @@
 class YoutubeTool < RubyLLM::Tool
-  description "Search Youtube videos associated with a product and fetches users' comments to gather opinions."
-  param :name, desc: "Then name of the product to search for on Youtube", type: :string
-  param :brand, desc: "The brand of the product to search for on Youtube", type: :string
+  description "Fetches YouTube comments for a given product. First updates the database with fresh comments, then returns the stored posts to the LLM."
+  param :product_id, type: Integer, description: "The ID of the product to search for on Youtube."
 
-  def execute(name:, brand:)
-    scraper = YoutubeScraperService.new(name: name, brand: brand)
-    data = scraper.call(10).flatten
-    data = data.first(20)
+  def execute(product_id:)
+    product = Product.find_by(id: product_id)
+    return { error: "Product not found" }.to_json unless product
 
-    puts "📤 DATA ENVOYÉE AU LLM : #{data.inspect}"
+    result = FetchYoutubeCommentsService.new(product).call
 
-    data.to_json
-  rescue StandardError => e
-    { error: "Failed to fetch Youtube data: #{e.message}" }.to_json
+    if result[:posts_count] == 0
+      { warning: "No comments found", product_id: product_id }.to_json
+    else
+      result.to_json
+    end
   end
 end

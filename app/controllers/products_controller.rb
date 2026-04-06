@@ -19,7 +19,7 @@ class ProductsController < ApplicationController
     @product.user = current_user
     @product.name = @product.name.titleize.strip
     @product.brand = @product.brand.upcase.strip
-    titles = "Sentiment général, Thème clef 1, Thème clef 2, Thème clef 3, Frustrations exprimées, Appréciation du design".split(", ")
+    titles = "Overall Sentiment, Key Theme 1, Key Theme 2, Key Theme 3, Frustrations & Pain Points, Design Appreciation, Strengths & Positive Feedback, Suggested Improvements, Representative Quotes".split(", ")
     titles.each { |title| @product.dashboard_cards.create(title: title) }
     if @product.save
       redirect_to products_path, notice: "Product created successfully.", status: :see_other
@@ -38,6 +38,13 @@ class ProductsController < ApplicationController
     else
       redirect_back_or_to products_path, notice: "Product deleted."
     end
+  end
+
+  def refresh_dashboard
+    @product = Product.find(params[:id])
+
+    DashboardRefreshService.new(@product).call
+    redirect_to product_path(@product), notice: "Dashboard mis à jour !"
   end
 
   private

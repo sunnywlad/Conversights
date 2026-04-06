@@ -10,6 +10,9 @@ Rails.application.routes.draw do
   resources :products, only: [:index, :new, :create, :show, :destroy] do
     resources :chats, only: [:new, :create, :destroy]
     resources :posts, only: [:index]
+    member do
+      post:refresh_dashboard
+    end
   end
 
   resources :chats, only: [:show] do
