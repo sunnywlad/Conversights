@@ -1,0 +1,54 @@
+<div class="container mt-5">
+  <div class="mb-4">
+    <h1><%= @product.name %></h1>
+    <p class="text-muted"><%= @product.brand %></p>
+  </div>
+
+  <div class="row mt-5">
+    <h2>Dashboard</h2>
+  </div>
+
+  <div class="row">
+    <% @dashboard_cards.each do |card| %>
+      <div class="col-md-4 mb-4">
+        <div class="border rounded p-3" style="min-height: 200px;">
+          <h5><%= card.title %></h5>
+          <p><%= card.content %></p>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Card Chats -->
+    <div class="col-md-4 mb-4">
+      <div class="border rounded p-3" style="min-height: 200px;">
+        <h5>Chats</h5>
+        <% if @product.chats.any? %>
+          <ul class="list-unstyled">
+            <% @product.chats.each do |chat| %>
+              <li class="d-flex align-items-center">
+                <%= link_to chat.title, chat_path(chat) %>
+                <%= button_to "X", product_chat_path(@product, chat), method: :delete, data: { turbo_confirm: "Do you really want to delete this chat ?" } %>
+              </li>
+            <% end %>
+          </ul>
+        <% else %>
+          <p class="text-muted">Aucun chat pour ce produit.</p>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-3">
+    <%= button_to "New chat", product_chats_path(@product), method: :post, class: "btn btn-primary btn-sm" %>
+    <%= link_to "Check posts", product_path(@product), class: "btn btn-info btn-sm" %>
+    <%= link_to "Retour", products_path, class: "btn btn-secondary" %>
+  </div>
+
+  <% if @dashboard_cards.empty? %>
+    <div class="alert alert-info">
+      Aucune carte de dashboard pour ce produit.
+    </div>
+  <% end %>
+
+
+</div>
