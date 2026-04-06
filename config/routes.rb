@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   root to: "pages#home"
 
   resources :products, only: [:index, :new, :create, :show, :destroy] do
-    resources :chats, only: [:new, :create]
+    resources :chats, only: [:new, :create, :destroy]
     resources :posts, only: [:index]
   end
 
