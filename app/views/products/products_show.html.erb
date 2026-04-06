@@ -1,0 +1,29 @@
+<div class="container mt-5">
+  <div class="mb-4">
+    <h1><%= @product.name %></h1>
+    <p class="text-muted"><%= @product.brand %></p>
+  </div>
+
+  <div class="row mt-5">
+    <h2>Dashboard</h2>
+  </div>
+
+  <div class="row">
+    <% @dashboard_cards.each do |card| %>
+      <div class="col-md-4 mb-4">
+        <div class="border rounded p-3" style="min-height: 200px;">
+          <h5><%= card.title %></h5>
+          <p><%= card.content %></p>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @dashboard_cards.empty? %>
+    <div class="alert alert-info">
+      Aucune carte de dashboard pour ce produit.
+    </div>
+  <% end %>
+
+  <%= link_to "Retour", products_path, class: "btn btn-secondary mt-3" %>
+</div>

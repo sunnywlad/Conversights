@@ -1,72 +1,56 @@
-<div class="dashboard">
-  <div class="dashboard-topbar">
-    <div class="dashboard-breadcrumb">
-      <i class="fa-solid fa-house"></i>
-      <span>Home</span>
-    </div>
-    <button class="dashboard-new-btn">
-      <i class="fa-solid fa-plus"></i>
-      <span>New</span>
-    </button>
+<div class="chats-index">
+  <div class="chats-index-header">
+    <nav class="breadcrumb">
+      <span class="breadcrumb-item active">
+        <i class="fa-solid fa-house"></i> Home
+      </span>
+    </nav>
+    <%= link_to new_product_path, class: "btn-new" do %>
+      <i class="fa-solid fa-plus"></i> New product
+    <% end %>
   </div>
 
-  <div class="dashboard-content">
-    <h1 class="dashboard-hero">What are you making sense of today?</h1>
+  <div class="chats-hero">
+    <h1>What are you making sense of today?</h1>
 
-    <div class="dashboard-input-card">
-      <div class="dashboard-input-search">
+    <%= link_to new_product_path, class: "hero-input-card" do %>
+      <div class="hero-input-placeholder">
         <i class="fa-solid fa-magnifying-glass"></i>
-        <span>Add content</span>
+        <span>Add a product to analyze...</span>
       </div>
-      <div class="dashboard-input-body">
-        <textarea class="dashboard-textarea" placeholder="Make sense of something..." rows="2"></textarea>
+      <div class="hero-input-footer">
+        <span class="hero-ask-btn">
+          <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze
+        </span>
       </div>
-      <div class="dashboard-input-footer">
-        <button class="dashboard-ask-btn">
-          <i class="fa-solid fa-wand-magic-sparkles"></i>
-          <span>Ask</span>
-          <i class="fa-solid fa-chevron-down"></i>
-        </button>
-        <div class="dashboard-input-actions">
-          <button class="dashboard-icon-btn">
-            <i class="fa-solid fa-paperclip"></i>
-          </button>
-          <button class="dashboard-icon-btn dashboard-send-btn">
-            <i class="fa-solid fa-arrow-up"></i>
-          </button>
-        </div>
-      </div>
-    </div>
+    <% end %>
+  </div>
 
-    <div class="dashboard-cards">
-      <div class="dashboard-card">
-        <div class="dashboard-card-icon dashboard-card-icon--blue">
-          <i class="fa-solid fa-chart-column"></i>
+  <div class="suggestion-grid">
+    <% if current_user.products.any? %>
+      <% current_user.products.each do |product| %>
+        <div class="suggestion-card-wrapper">
+          <%= link_to product_path(product), class: "suggestion-card" do %>
+            <div class="suggestion-icon">
+              <i class="fa-solid fa-box"></i>
+            </div>
+            <h3><%= product.name %></h3>
+            <p><%= product.brand %></p>
+          <% end %>
+          <%= button_to product_path(product), method: :delete,
+              data: { turbo_confirm: "Do you really want to delete this product ?" },
+              class: "btn-delete-product" do %>
+            <i class="fa-solid fa-xmark"></i>
+          <% end %>
         </div>
-        <h3 class="dashboard-card-title">Competitive Landscape Research & Analysis</h3>
-        <p class="dashboard-card-desc">Analyze market positioning and competitor strategies</p>
+      <% end %>
+    <% end %>
+
+    <%= link_to new_product_path, class: "suggestion-card" do %>
+      <div class="suggestion-icon">
+        <i class="fa-solid fa-plus"></i>
       </div>
-      <div class="dashboard-card">
-        <div class="dashboard-card-icon dashboard-card-icon--green">
-          <i class="fa-solid fa-chart-line"></i>
-        </div>
-        <h3 class="dashboard-card-title">Emerging Consumer Trend Direction</h3>
-        <p class="dashboard-card-desc">Identify and track emerging market trends</p>
-      </div>
-      <div class="dashboard-card">
-        <div class="dashboard-card-icon dashboard-card-icon--purple">
-          <i class="fa-solid fa-bullseye"></i>
-        </div>
-        <h3 class="dashboard-card-title">Market Size and Opportunity Assessment</h3>
-        <p class="dashboard-card-desc">Evaluate market potential and opportunities</p>
-      </div>
-      <div class="dashboard-card">
-        <div class="dashboard-card-icon dashboard-card-icon--orange">
-          <i class="fa-solid fa-users"></i>
-        </div>
-        <h3 class="dashboard-card-title">Demographic Segment Breakdown & Analysis</h3>
-        <p class="dashboard-card-desc">Understand your target audience segments</p>
-      </div>
-    </div>
+      <h3>Add Product</h3>
+    <% end %>
   </div>
 </div>
