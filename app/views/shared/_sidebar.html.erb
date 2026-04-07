@@ -1,0 +1,73 @@
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">
+      <span class="sidebar-logo-icon">C</span>
+      <span class="sidebar-logo-text">Conversights</span>
+    </div>
+  </div>
+
+  <div class="sidebar-search">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    <span>Search</span>
+  </div>
+
+  <nav class="sidebar-nav">
+    <div class="sidebar-nav-group">
+      <a href="#" class="sidebar-nav-item active">
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      </a>
+      <a href="#" class="sidebar-nav-item has-arrow">
+        <i class="fa-solid fa-magnifying-glass-chart"></i>
+        <span>Discover</span>
+        <i class="fa-solid fa-chevron-right sidebar-nav-chevron"></i>
+      </a>
+      <a href="#" class="sidebar-nav-item">
+        <i class="fa-solid fa-folder"></i>
+        <span>Portfolio</span>
+      </a>
+    </div>
+
+    <div class="sidebar-nav-group">
+      <a href="#" class="sidebar-nav-item">
+        <i class="fa-solid fa-inbox"></i>
+        <span>Inbox</span>
+      </a>
+      <a href="#" class="sidebar-nav-item">
+        <i class="fa-solid fa-clock-rotate-left"></i>
+        <span>Recent</span>
+      </a>
+    </div>
+
+    <div class="sidebar-nav-group">
+      <div class="sidebar-section-header">
+        <span>Projects</span>
+        <button class="sidebar-add-btn">
+          <i class="fa-solid fa-plus"></i>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div class="sidebar-footer">
+    <a href="#" class="sidebar-nav-item">
+      <i class="fa-solid fa-book"></i>
+      <span>Knowledge</span>
+    </a>
+    <a href="#" class="sidebar-nav-item has-arrow">
+      <i class="fa-solid fa-gear"></i>
+      <span>Settings</span>
+      <i class="fa-solid fa-chevron-right sidebar-nav-chevron"></i>
+    </a>
+    <a href="#" class="sidebar-nav-item">
+      <i class="fa-solid fa-circle-question"></i>
+      <span>Help</span>
+    </a>
+    <% if user_signed_in? %>
+      <a href="<%= destroy_user_session_path %>" class="sidebar-nav-item" data-turbo-method="delete">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <span>Log out</span>
+      </a>
+    <% end %>
+  </div>
+</aside>

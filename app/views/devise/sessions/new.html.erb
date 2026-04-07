@@ -1,20 +1,25 @@
-<h2>Log in</h2>
+<h2 class="auth-heading">Welcome back</h2>
+<p class="auth-heading-sub">Sign in to your account</p>
 
-<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name)) do |f| %>
+<%= simple_form_for(resource, as: resource_name, url: session_path(resource_name), html: { class: "auth-form" }) do |f| %>
   <div class="form-inputs">
     <%= f.input :email,
                 required: false,
                 autofocus: true,
+                placeholder: "you@company.com",
                 input_html: { autocomplete: "email" } %>
     <%= f.input :password,
                 required: false,
+                placeholder: "Your password",
                 input_html: { autocomplete: "current-password" } %>
     <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit, "Log in" %>
+    <%= f.button :submit, "Sign in" %>
   </div>
 <% end %>
 
-<%= render "devise/shared/links" %>
+<div class="auth-links">
+  Don't have an account? <%= link_to "Sign up", new_registration_path(resource_name) %>
+</div>
