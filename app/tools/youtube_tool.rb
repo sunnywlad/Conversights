@@ -1,6 +1,6 @@
 class YoutubeTool < RubyLLM::Tool
   description "Fetches YouTube comments for a given product. First updates the database with fresh comments, then returns the stored posts to the LLM."
-  param :product_id, type: Integer, description: "The ID of the product to search for on Youtube."
+  param :product_id, type: Integer
 
   def execute(product_id:)
     product = Product.find_by(id: product_id)
