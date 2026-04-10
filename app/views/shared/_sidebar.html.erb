@@ -1,9 +1,11 @@
+<% sidebar_products = user_signed_in? ? current_user.products.order(created_at: :desc) : [] %>
+<% portfolio_open = controller_name == 'products' || (controller_name == 'chats' && action_name == 'show') %>
 <aside class="sidebar">
   <div class="sidebar-header">
-    <div class="sidebar-logo">
+    <%= link_to products_path, class: "sidebar-logo" do %>
       <span class="sidebar-logo-icon">C</span>
       <span class="sidebar-logo-text">Conversights</span>
-    </div>
+    <% end %>
   </div>
 
   <div class="sidebar-search">
@@ -13,61 +15,63 @@
 
   <nav class="sidebar-nav">
     <div class="sidebar-nav-group">
-      <a href="#" class="sidebar-nav-item active">
+      <%= link_to products_path, class: "sidebar-nav-item #{'active' if controller_name == 'products' && action_name == 'index'}" do %>
         <i class="fa-solid fa-house"></i>
         <span>Home</span>
-      </a>
+      <% end %>
       <a href="#" class="sidebar-nav-item has-arrow">
         <i class="fa-solid fa-magnifying-glass-chart"></i>
         <span>Discover</span>
         <i class="fa-solid fa-chevron-right sidebar-nav-chevron"></i>
       </a>
-      <a href="#" class="sidebar-nav-item">
-        <i class="fa-solid fa-folder"></i>
-        <span>Portfolio</span>
-      </a>
-    </div>
 
-    <div class="sidebar-nav-group">
-      <a href="#" class="sidebar-nav-item">
-        <i class="fa-solid fa-inbox"></i>
-        <span>Inbox</span>
-      </a>
-      <a href="#" class="sidebar-nav-item">
-        <i class="fa-solid fa-clock-rotate-left"></i>
-        <span>Recent</span>
-      </a>
-    </div>
+      <details class="sidebar-portfolio" <%= 'open' if portfolio_open %>>
+        <summary class="sidebar-nav-item sidebar-portfolio-summary">
+          <i class="fa-solid fa-folder"></i>
+          <span>Portfolio</span>
+          <% if sidebar_products.any? %>
+            <span class="sidebar-portfolio-count"><%= sidebar_products.size %></span>
+          <% end %>
+          <i class="fa-solid fa-chevron-right sidebar-nav-chevron sidebar-portfolio-chevron"></i>
+        </summary>
 
-    <div class="sidebar-nav-group">
-      <div class="sidebar-section-header">
-        <span>Projects</span>
-        <button class="sidebar-add-btn">
-          <i class="fa-solid fa-plus"></i>
-        </button>
-      </div>
+        <div class="sidebar-portfolio-body">
+          <%= link_to new_product_path, class: "sidebar-portfolio-action" do %>
+            <i class="fa-solid fa-plus"></i>
+            <span>New product</span>
+          <% end %>
+
+          <% if sidebar_products.any? %>
+            <div class="sidebar-products">
+              <% sidebar_products.each do |product| %>
+                <%= link_to product_path(product), class: "sidebar-nav-item sidebar-product-item #{'active' if controller_name == 'products' && action_name == 'show' && @product&.id == product.id}" do %>
+                  <i class="fa-solid fa-box"></i>
+                  <span class="sidebar-product-name"><%= product.name %></span>
+                <% end %>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="sidebar-empty">No products yet</p>
+          <% end %>
+        </div>
+      </details>
     </div>
   </nav>
 
   <div class="sidebar-footer">
-    <a href="#" class="sidebar-nav-item">
+    <%= link_to knowledge_path, class: "sidebar-nav-item #{'active' if controller_name == 'pages' && action_name == 'knowledge'}" do %>
       <i class="fa-solid fa-book"></i>
       <span>Knowledge</span>
-    </a>
-    <a href="#" class="sidebar-nav-item has-arrow">
+    <% end %>
+    <%= link_to settings_path, class: "sidebar-nav-item #{'active' if controller_name == 'pages' && action_name == 'settings'}" do %>
       <i class="fa-solid fa-gear"></i>
       <span>Settings</span>
-      <i class="fa-solid fa-chevron-right sidebar-nav-chevron"></i>
-    </a>
-    <a href="#" class="sidebar-nav-item">
-      <i class="fa-solid fa-circle-question"></i>
-      <span>Help</span>
-    </a>
+    <% end %>
     <% if user_signed_in? %>
-      <a href="<%= destroy_user_session_path %>" class="sidebar-nav-item" data-turbo-method="delete">
+      <%= button_to destroy_user_session_path, method: :delete, class: "sidebar-nav-item sidebar-logout-btn", form: { data: { turbo: false } } do %>
         <i class="fa-solid fa-right-from-bracket"></i>
         <span>Log out</span>
-      </a>
+      <% end %>
     <% end %>
   </div>
 </aside>

@@ -1,0 +1,170 @@
+<div class="dashboard">
+  <div class="dashboard-topbar">
+    <div class="dashboard-breadcrumb">
+      <%= link_to products_path, class: "dashboard-breadcrumb-link" do %>
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      <% end %>
+      <i class="fa-solid fa-chevron-right dashboard-breadcrumb-separator"></i>
+      <span>Knowledge</span>
+    </div>
+  </div>
+
+  <div class="knowledge">
+    <header class="knowledge-header">
+      <div class="knowledge-badge">
+        <i class="fa-solid fa-book"></i>
+        <span>User guide</span>
+      </div>
+      <h1>Everything you need to get started</h1>
+      <p class="knowledge-lead">
+        Conversights helps Product Managers understand what the world says about their products.
+        Create a product, start a chat, and get instant insights from YouTube, Reddit, and X.
+      </p>
+    </header>
+
+    <nav class="knowledge-toc">
+      <a href="#concept" class="knowledge-toc-item">
+        <span class="knowledge-toc-num">01</span>
+        <span>The concept</span>
+      </a>
+      <a href="#create-product" class="knowledge-toc-item">
+        <span class="knowledge-toc-num">02</span>
+        <span>Create a product</span>
+      </a>
+      <a href="#start-chat" class="knowledge-toc-item">
+        <span class="knowledge-toc-num">03</span>
+        <span>Start a chat</span>
+      </a>
+      <a href="#dashboard" class="knowledge-toc-item">
+        <span class="knowledge-toc-num">04</span>
+        <span>Dashboard insights</span>
+      </a>
+    </nav>
+
+    <section id="concept" class="knowledge-section">
+      <div class="knowledge-section-header">
+        <span class="knowledge-section-num">01</span>
+        <h2>The concept</h2>
+      </div>
+      <div class="knowledge-section-body">
+        <p>
+          Every day, thousands of people talk about your product online.
+          They share frustrations on Reddit, rave on YouTube comments, and tweet their opinions on X.
+          That's a goldmine of signal — if you know where to look.
+        </p>
+        <p>
+          <strong>Conversights turns this scattered noise into structured insights</strong>,
+          so you can make decisions backed by what users actually feel, not what they say in surveys.
+        </p>
+        <div class="knowledge-callout">
+          <i class="fa-solid fa-lightbulb"></i>
+          <div>
+            <strong>Think of it as a PM research assistant.</strong>
+            Instead of spending hours scrolling threads, you ask a question and get a synthesized answer grounded in real conversations.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="create-product" class="knowledge-section">
+      <div class="knowledge-section-header">
+        <span class="knowledge-section-num">02</span>
+        <h2>Create a product</h2>
+      </div>
+      <div class="knowledge-section-body">
+        <p>A product is the unit of analysis. It can be a shoe, an app, a feature, or an entire brand line.</p>
+        <ol class="knowledge-steps">
+          <li>
+            <strong>Click "New product"</strong> from the home page (or the <i class="fa-solid fa-plus"></i> in the sidebar).
+          </li>
+          <li>
+            <strong>Give it a name</strong> — for example <em>Air Max 270</em>.
+          </li>
+          <li>
+            <strong>Set the brand</strong> — for example <em>Nike</em>. This helps the system disambiguate when multiple products share a name.
+          </li>
+          <li>
+            <strong>Save.</strong> Your product now appears in the sidebar under <em>Products</em>, ready to be analyzed.
+          </li>
+        </ol>
+        <div class="knowledge-callout knowledge-callout--tip">
+          <i class="fa-solid fa-circle-info"></i>
+          <div>
+            <strong>Tip:</strong> Be specific. "Nike" alone is too broad — "Air Max 270" gives the system sharper context.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="start-chat" class="knowledge-section">
+      <div class="knowledge-section-header">
+        <span class="knowledge-section-num">03</span>
+        <h2>Start a chat</h2>
+      </div>
+      <div class="knowledge-section-body">
+        <p>
+          Chats are where you ask questions and get answers. Each chat is tied to a product and keeps its full history,
+          so you can iterate on a line of questioning over time.
+        </p>
+        <ol class="knowledge-steps">
+          <li>Open a product from the sidebar or the home page.</li>
+          <li>Click <strong>New chat</strong>.</li>
+          <li>Ask anything — the more specific, the better.</li>
+        </ol>
+        <div class="knowledge-examples">
+          <h4>Good questions to try</h4>
+          <div class="knowledge-example">
+            <i class="fa-solid fa-quote-left"></i>
+            <span>What do Gen Z users think about this product?</span>
+          </div>
+          <div class="knowledge-example">
+            <i class="fa-solid fa-quote-left"></i>
+            <span>What are the most common frustrations people have?</span>
+          </div>
+          <div class="knowledge-example">
+            <i class="fa-solid fa-quote-left"></i>
+            <span>How does it compare to competitor X in online conversations?</span>
+          </div>
+          <div class="knowledge-example">
+            <i class="fa-solid fa-quote-left"></i>
+            <span>What features are people asking for most?</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="dashboard" class="knowledge-section">
+      <div class="knowledge-section-header">
+        <span class="knowledge-section-num">04</span>
+        <h2>Dashboard insights</h2>
+      </div>
+      <div class="knowledge-section-body">
+        <p>
+          Each product comes with a live dashboard that summarizes what the internet is saying.
+          It's always-on — click <strong>Refresh</strong> to pull the latest signals.
+        </p>
+        <ul class="knowledge-list">
+          <li><strong>Overall Sentiment</strong> — how people feel about the product at a glance</li>
+          <li><strong>Frustrations & Pain Points</strong> — where users are hurting</li>
+          <li><strong>Strengths & Positive Feedback</strong> — what's working</li>
+        </ul>
+        <div class="knowledge-callout">
+          <i class="fa-solid fa-bolt"></i>
+          <div>
+            Dashboard cards are updated by an AI that reads through public discussions on YouTube, Reddit, and X,
+            then condenses them into actionable takeaways.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="knowledge-footer">
+      <p>Ready to start?</p>
+      <%= link_to new_product_path, class: "knowledge-cta" do %>
+        <i class="fa-solid fa-plus"></i>
+        <span>Create your first product</span>
+      <% end %>
+    </div>
+  </div>
+</div>

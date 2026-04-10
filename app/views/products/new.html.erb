@@ -1,0 +1,43 @@
+<div class="dashboard">
+  <div class="dashboard-topbar">
+    <div class="dashboard-breadcrumb">
+      <%= link_to products_path, class: "dashboard-breadcrumb-link" do %>
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      <% end %>
+      <i class="fa-solid fa-chevron-right dashboard-breadcrumb-separator"></i>
+      <span>New product</span>
+    </div>
+  </div>
+
+  <div class="dashboard-content">
+    <div class="product-form-card">
+      <div class="product-form-header">
+        <div class="product-form-icon">
+          <i class="fa-solid fa-box"></i>
+        </div>
+        <h2>Create a new product</h2>
+        <p>Start tracking what people say about it across social media.</p>
+      </div>
+
+      <%= simple_form_for @product, html: { class: "product-form" } do |f| %>
+        <%= f.error_notification %>
+
+        <%= f.input :name,
+                    label: "Product name",
+                    placeholder: "e.g. Air Max 270",
+                    required: true,
+                    autofocus: true %>
+        <%= f.input :brand,
+                    label: "Brand",
+                    placeholder: "e.g. Nike",
+                    required: true %>
+
+        <div class="product-form-actions">
+          <%= link_to "Cancel", products_path, class: "btn-cancel" %>
+          <%= f.button :submit, "Create product", class: "btn-primary" %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+</div>
