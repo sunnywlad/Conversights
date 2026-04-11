@@ -6,6 +6,8 @@ Rails.application.routes.draw do
   # }
 
   root to: "pages#home"
+  get "knowledge", to: "pages#knowledge"
+  get "settings", to: "pages#settings"
 
   resources :products, only: [:index, :new, :create, :show, :destroy] do
     resources :chats, only: [:new, :create, :destroy]
