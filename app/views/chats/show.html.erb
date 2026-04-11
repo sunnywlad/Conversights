@@ -11,6 +11,10 @@
       <span><%= @chat.title %></span>
     </div>
     <div class="dashboard-topbar-actions">
+      <%= link_to product_path(@chat.product), class: "dashboard-new-btn" do %>
+        <i class="fa-solid fa-chart-simple"></i>
+        <span>Product dashboard</span>
+      <% end %>
       <%= button_to product_chat_path(@chat.product, @chat),
                     method: :delete,
                     data: { turbo_confirm: "Delete this chat?" },
@@ -44,7 +48,7 @@
             <i class="fa-solid fa-wand-magic-sparkles"></i>
           </div>
           <h2>Ask anything about <%= @chat.product.name %></h2>
-          <p>Get insights from YouTube, Reddit, and X in seconds.</p>
+          <p>Get insights from real YouTube conversations in seconds. <span class="chat-empty-note">More sources coming soon.</span></p>
           <div class="chat-suggestions">
             <button type="button" class="chat-suggestion"
                     data-action="click->chat-suggestions#fill"

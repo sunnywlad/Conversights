@@ -1,14 +1,8 @@
 class DashboardRefreshService
   TITLE_TO_KEY = {
-    "Overall Sentiment"          => "overall_sentiment",
-    "Key Theme 1"                => "key_theme_1",
-    "Key Theme 2"                => "key_theme_2",
-    "Key Theme 3"                => "key_theme_3",
-    "Frustrations & Pain Points" => "frustrations_and_pain_points",
-    "Design Appreciation"        => "design_appreciation",
-    "Strengths & Positive Feedback" => "strengths_and_positive_feedback",
-    "Suggested Improvements"     => "suggested_improvements",
-    "Representative Quotes"      => "representative_quotes"
+    "Overall Sentiment"              => "overall_sentiment",
+    "Frustrations & Pain Points"     => "frustrations_and_pain_points",
+    "Strengths & Positive Feedback"  => "strengths_and_positive_feedback"
   }.freeze
 
   def initialize(product)
@@ -52,8 +46,10 @@ class DashboardRefreshService
 
       data = llm_response[key]
       new_title = data["title"].present? ? data["title"] : card.title
+      raw_content = data["content"]
+      content = raw_content.is_a?(String) ? raw_content : raw_content.to_json
 
-      card.update!(title: new_title, content: data["content"])
+      card.update!(title: new_title, content: content)
     end
   end
 end
