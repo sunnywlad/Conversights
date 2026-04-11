@@ -45,7 +45,7 @@
 }
 
 .dashboard-new-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
@@ -57,10 +57,15 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
+  text-decoration: none;
 
-  &:hover {
+  &:hover,
+  &:focus,
+  &:active {
     border-color: $dark-gray;
     background: $lighter-gray;
+    color: $dark;
+    text-decoration: none;
   }
 }
 

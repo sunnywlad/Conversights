@@ -22,22 +22,17 @@ class ProductsController < ApplicationController
     if @product.save
       titles = ["Overall Sentiment", "Frustrations & Pain Points", "Strengths & Positive Feedback"]
       titles.each { |title| @product.dashboard_cards.create(title: title) }
-      redirect_to product_path(@product), notice: "Product created successfully.", status: :see_other
+      chat = @product.chats.create(title: Chat::DEFAULT_TITLE)
+      redirect_to chat_path(chat), notice: "Product created — start by asking anything.", status: :see_other
     else
       render :new, status: :unprocessable_entity
     end
   end
 
   def destroy
-    @product = Product.find(params[:id])
-    referer = request.referer
+    @product = current_user.products.find(params[:id])
     @product.destroy
-
-    if referer&.include?(product_path(@product))
-      redirect_to products_path, notice: "Product deleted."
-    else
-      redirect_back_or_to products_path, notice: "Product deleted."
-    end
+    redirect_to products_path, notice: "Product deleted.", status: :see_other
   end
 
   def refresh_dashboard

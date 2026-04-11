@@ -54,9 +54,13 @@
                 <i class="fa-solid fa-chart-simple"></i>
               </div>
               <h3 class="insight-card-title"><%= card.title %></h3>
-              <p class="insight-card-content">
-                <%= card.content.presence || "No data yet. Click Refresh to analyze." %>
-              </p>
+              <div class="insight-card-content">
+                <% if card.content.present? %>
+                  <%= raw(render_markdown(card.content)) %>
+                <% else %>
+                  <p class="insight-card-empty">No data yet. Click Refresh to analyze.</p>
+                <% end %>
+              </div>
             </div>
           <% end %>
         </div>
