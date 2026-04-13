@@ -1,6 +1,5 @@
 .sidebar {
-  width: 260px;
-  min-width: 260px;
+  width: 60px;
   height: 100vh;
   background: $white;
   border-right: 1px solid $light-gray;
@@ -10,7 +9,8 @@
   left: 0;
   top: 0;
   z-index: 100;
-  overflow-y: auto;
+  overflow: hidden;
+  transition: width 0.25s ease;
 }
 
 // Logo
@@ -152,4 +152,39 @@
 .sidebar-footer {
   border-top: 1px solid $light-gray;
   padding: 0.5rem 0.75rem 1rem;
+}
+
+// Sidebar rétractable
+.sidebar:hover {
+  width: 260px;
+}
+
+// Masquer les textes quand la sidebar est fermée
+.sidebar:not(:hover) span:not(.sidebar-logo-icon) {
+  opacity: 0;
+}
+
+.sidebar:hover span {
+  opacity: 1;
+  transition: opacity 0.2s ease 0.1s;
+}
+
+// Centrer le logo en mode fermé
+.sidebar:not(:hover) .sidebar-header {
+  padding: 1.25rem 14px 0.75rem;
+}
+
+.sidebar:not(:hover) .sidebar-logo-icon {
+  width: 32px;
+  height: 32px;
+  font-size: 0.875rem;
+  border-radius: 8px;
+  flex-shrink: 0;
+}
+
+// Centrer la loupe en mode fermé
+.sidebar:not(:hover) .sidebar-search {
+  margin: 0.5rem auto 0.25rem;
+  width: 36px;
+  padding: 0.5rem 0.75rem;
 }
