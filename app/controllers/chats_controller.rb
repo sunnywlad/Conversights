@@ -7,7 +7,6 @@ class ChatsController < ApplicationController
     @product = Product.find(params[:product_id])
     @chat = Chat.new(title: Chat::DEFAULT_TITLE)
     @chat.product = @product
-    @chat.save!
     if @chat.save
       redirect_to chat_path(@chat)
     else
