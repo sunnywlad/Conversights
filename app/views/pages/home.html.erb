@@ -1,3 +1,67 @@
-<h1>Hello Landing page</h1>
-<%= link_to "sign in", new_user_session_path %>
-<%= link_to "sign up", new_user_registration_path %>
+<header>
+  <h1> Bienvenue sur Conversights </h1>
+  <p> Dévouvrez-notre nos recherches de produit client </p>
+</header>
+<%= Navbar %>
+<nav class="navbar">
+  <div class="navbar_brand">Conversights</div>
+  <ul class="navbar_links">
+    <li><a href="#fonctionnalités">Fonctionnalités</a></li>
+    <li><a href="#tarif">Tarifs</a></li>
+    <li><a href="#about">à propos</a></li>
+    <li><a href="#login"> Se connecter</a></li>
+    <li><a href="#signup">Créer un compte</a></li>
+  </ul>
+</nav>
+
+<%= DEMO %>
+  <section class="section" id="demo">
+    <div class="container">
+      <h2>Découvrez notre démo</h2>
+      <p>Explorez les fonctionnalités de Conversights à travers notre démo interactive.</p>
+      <a href="/demo" class="btn">Voir la démo</a>
+    </div>
+  </section>
+
+  <%= HERO %>
+  <section class="hero">
+    <div class="hero_content">
+      <h2>Transformez vos données en insights actionnables</h2>
+      <p>Avec Conversights, obtenez des analyses approfondies pour prendre des décisions éclairées.</p>
+      <a href="#fonctionnalités" class="btn">En savoir plus</a>
+    </div>
+  </section>
+
+  <%= PROBLEM %>
+  <section class="section" id="problem">
+    <div class="container">
+      <h2>Le problème</h2>
+      <p>De nombreuses entreprises peinent à exploiter pleinement leurs données,
+      ce qui limite leur capacité à prendre des décisions stratégiques.</p>
+    </div>
+  </section>
+
+  <%= SOLUTION %>
+  <section class="section" id="solution">
+    <div class="container">
+      <h2>Notre solution</h2>
+      <p>Conversights offre une plateforme intuitive qui transforme vos données en insights clairs et exploitables,
+        vous permettant de prendre des décisions basées sur des faits.</p>
+    </div>
+  </section>
+
+  <%= FONCTIONNALITES %>
+  <section class="section" id="fonctionnalités">
+    <div class="container">
+      <h2>Fonctionnalités clés</h2>
+      <ul>
+        <li>Analyse de données avancée</li>
+        <li>Visualisation interactive</li>
+        <li>Rapports personnalisés</li>
+        <li>Intégration facile avec vos outils existants</li>
+      </ul>
+    </div>
+</section>
+<footer>
+  <p>© Conversight 2026</p>
+</footer>

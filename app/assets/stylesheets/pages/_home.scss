@@ -3,6 +3,18 @@
   padding: 0;
 }
 
+//Navbar
+.navbar {
+  background-color: grey;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid $light-gray;
+}
+
+
 // Top bar
 .dashboard-topbar {
   display: flex;
