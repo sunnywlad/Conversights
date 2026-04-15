@@ -1,56 +1,77 @@
-<div class="chats-index">
-  <div class="chats-index-header">
-    <nav class="breadcrumb">
-      <span class="breadcrumb-item active">
-        <i class="fa-solid fa-house"></i> Home
-      </span>
-    </nav>
-    <%= link_to new_product_path, class: "btn-new" do %>
-      <i class="fa-solid fa-plus"></i> New product
+<div class="dashboard">
+  <div class="dashboard-topbar">
+    <div class="dashboard-breadcrumb">
+      <i class="fa-solid fa-house"></i>
+      <span>Home</span>
+    </div>
+    <%= link_to new_product_path, class: "dashboard-new-btn" do %>
+      <i class="fa-solid fa-plus"></i>
+      <span>New product</span>
     <% end %>
   </div>
 
-  <div class="chats-hero">
-    <h1>What are you making sense of today?</h1>
+  <div class="dashboard-content">
+    <h1 class="dashboard-hero">What are you making sense of today?</h1>
 
-    <%= link_to new_product_path, class: "hero-input-card" do %>
-      <div class="hero-input-placeholder">
+    <%= link_to new_product_path, class: "dashboard-input-card dashboard-input-card--link" do %>
+      <div class="dashboard-input-search">
         <i class="fa-solid fa-magnifying-glass"></i>
         <span>Add a product to analyze...</span>
       </div>
-      <div class="hero-input-footer">
-        <span class="hero-ask-btn">
-          <i class="fa-solid fa-wand-magic-sparkles"></i> Analyze
+      <div class="dashboard-input-footer">
+        <span class="dashboard-ask-btn">
+          <i class="fa-solid fa-wand-magic-sparkles"></i>
+          <span>Analyze</span>
         </span>
+        <div class="dashboard-input-actions">
+          <span class="dashboard-icon-btn dashboard-send-btn">
+            <i class="fa-solid fa-arrow-right"></i>
+          </span>
+        </div>
       </div>
     <% end %>
-  </div>
 
-  <div class="suggestion-grid">
-    <% if current_user.products.any? %>
-      <% current_user.products.each do |product| %>
-        <div class="suggestion-card-wrapper">
-          <%= link_to product_path(product), class: "suggestion-card" do %>
-            <div class="suggestion-icon">
-              <i class="fa-solid fa-box"></i>
+    <% if @products.any? %>
+      <div class="products-section">
+        <div class="products-section-header">
+          <h2>Your products</h2>
+          <span class="products-count"><%= @products.size %></span>
+        </div>
+
+        <div class="products-grid">
+          <% @products.each_with_index do |product, i| %>
+            <div class="product-card-wrapper">
+              <%= link_to product_path(product), class: "product-card" do %>
+                <div class="product-card-icon product-card-icon--<%= ['blue', 'green', 'purple', 'orange'][i % 4] %>">
+                  <i class="fa-solid fa-box"></i>
+                </div>
+                <h3 class="product-card-title"><%= product.name %></h3>
+                <p class="product-card-brand"><%= product.brand %></p>
+                <div class="product-card-meta">
+                  <span><i class="fa-solid fa-comment"></i> <%= product.chats.count %></span>
+                  <span><i class="fa-solid fa-chart-simple"></i> <%= product.dashboard_cards.count %></span>
+                </div>
+              <% end %>
+              <%= button_to product_path(product),
+                  method: :delete,
+                  data: { turbo_confirm: "Delete this product?" },
+                  class: "product-card-delete",
+                  form: { data: { turbo_frame: "_top" } } do %>
+                <i class="fa-solid fa-xmark"></i>
+              <% end %>
             </div>
-            <h3><%= product.name %></h3>
-            <p><%= product.brand %></p>
-          <% end %>
-          <%= button_to product_path(product), method: :delete,
-              data: { turbo_confirm: "Do you really want to delete this product ?" },
-              class: "btn-delete-product" do %>
-            <i class="fa-solid fa-xmark"></i>
           <% end %>
         </div>
-      <% end %>
-    <% end %>
-
-    <%= link_to new_product_path, class: "suggestion-card" do %>
-      <div class="suggestion-icon">
-        <i class="fa-solid fa-plus"></i>
       </div>
-      <h3>Add Product</h3>
+    <% else %>
+      <div class="products-empty">
+        <div class="products-empty-icon">
+          <i class="fa-solid fa-box-open"></i>
+        </div>
+        <h3>No products yet</h3>
+        <p>Create your first product to start analyzing social media buzz.</p>
+        <%= link_to "Create your first product", new_product_path, class: "products-empty-btn" %>
+      </div>
     <% end %>
   </div>
 </div>
