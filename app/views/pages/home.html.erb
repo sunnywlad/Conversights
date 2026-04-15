@@ -2,19 +2,18 @@
   <h1> Bienvenue sur Conversights </h1>
   <p> Dévouvrez-notre nos recherches de produit client </p>
 </header>
-<%= Navbar %>
+
 <nav class="navbar">
   <div class="navbar_brand">Conversights</div>
   <ul class="navbar_links">
     <li><a href="#fonctionnalités">Fonctionnalités</a></li>
     <li><a href="#tarif">Tarifs</a></li>
-    <li><a href="#about">à propos</a></li>
-    <li><a href="#login"> Se connecter</a></li>
-    <li><a href="#signup">Créer un compte</a></li>
+    <li><%= link_to "À propos", knowledge_path %></li>
+    <li><%= link_to "Se connecter", new_user_session_path %></li>
+    <li><%= link_to "Créer un compte", new_user_registration_path %></li>
   </ul>
 </nav>
 
-<%= DEMO %>
   <section class="section" id="demo">
     <div class="container">
       <h2>Découvrez notre démo</h2>
@@ -23,7 +22,6 @@
     </div>
   </section>
 
-  <%= HERO %>
   <section class="hero">
     <div class="hero_content">
       <h2>Transformez vos données en insights actionnables</h2>
@@ -32,7 +30,6 @@
     </div>
   </section>
 
-  <%= PROBLEM %>
   <section class="section" id="problem">
     <div class="container">
       <h2>Le problème</h2>
@@ -41,7 +38,6 @@
     </div>
   </section>
 
-  <%= SOLUTION %>
   <section class="section" id="solution">
     <div class="container">
       <h2>Notre solution</h2>
@@ -50,7 +46,6 @@
     </div>
   </section>
 
-  <%= FONCTIONNALITES %>
   <section class="section" id="fonctionnalités">
     <div class="container">
       <h2>Fonctionnalités clés</h2>
