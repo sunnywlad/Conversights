@@ -331,3 +331,37 @@
   width: 36px;
   padding: 0.5rem 0.75rem;
 }
+
+// Masquer le contenu du portfolio en mode fermé
+.sidebar:not(:hover) .sidebar-portfolio-body {
+  display: none;
+}
+
+// Réduire le bouton Log out en mode fermé
+.sidebar:not(:hover) .sidebar-logout-btn button {
+  justify-content: center;
+  padding: 0.5rem 0;
+}
+
+// Bouton Log out en mode fermé
+.sidebar:not(:hover) .sidebar-logout-btn,
+.sidebar:not(:hover) .sidebar-logout-btn button {
+  width: 100%;
+  padding: 0.5rem 0.75rem;
+  justify-content: center;
+}
+
+// Corriger le bouton Log out en mode fermé
+.sidebar:not(:hover) .sidebar-logout-btn {
+  border: none;
+  background: none;
+  padding: 0;
+}
+
+.sidebar:not(:hover) .sidebar-logout-btn button {
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  padding-left: 20px;
+  border: none;
+  background: none;
+}
