@@ -1,0 +1,297 @@
+<div class="dashboard">
+  <div class="dashboard-topbar">
+    <div class="dashboard-breadcrumb">
+      <%= link_to products_path, class: "dashboard-breadcrumb-link" do %>
+        <i class="fa-solid fa-house"></i>
+        <span>Home</span>
+      <% end %>
+      <i class="fa-solid fa-chevron-right dashboard-breadcrumb-separator"></i>
+      <span>Settings</span>
+    </div>
+  </div>
+
+  <div class="settings">
+    <header class="settings-header">
+      <h1>Settings</h1>
+      <p>Manage your account, preferences, and subscription.</p>
+    </header>
+
+    <div class="settings-layout">
+      <nav class="settings-nav">
+        <a href="#profile" class="settings-nav-item">
+          <i class="fa-solid fa-user"></i>
+          <span>Profile</span>
+        </a>
+        <a href="#notifications" class="settings-nav-item">
+          <i class="fa-solid fa-bell"></i>
+          <span>Notifications</span>
+        </a>
+        <a href="#appearance" class="settings-nav-item">
+          <i class="fa-solid fa-palette"></i>
+          <span>Appearance</span>
+        </a>
+        <a href="#integrations" class="settings-nav-item">
+          <i class="fa-solid fa-plug"></i>
+          <span>Integrations</span>
+        </a>
+        <a href="#billing" class="settings-nav-item">
+          <i class="fa-solid fa-credit-card"></i>
+          <span>Billing</span>
+        </a>
+        <a href="#danger" class="settings-nav-item settings-nav-item--danger">
+          <i class="fa-solid fa-triangle-exclamation"></i>
+          <span>Danger zone</span>
+        </a>
+      </nav>
+
+      <div class="settings-content">
+        <section id="profile" class="settings-section">
+          <div class="settings-section-header">
+            <h2>Profile</h2>
+            <p>Your personal information and how you sign in.</p>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <label>Avatar</label>
+                <span class="settings-row-hint">This is shown across the app.</span>
+              </div>
+              <div class="settings-row-control">
+                <div class="settings-avatar">
+                  <%= current_user.email[0].upcase %>
+                </div>
+                <button type="button" class="btn-ghost" disabled>Change</button>
+              </div>
+            </div>
+
+            <div class="settings-divider"></div>
+
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <label>Email</label>
+                <span class="settings-row-hint">Used to sign in and for notifications.</span>
+              </div>
+              <div class="settings-row-control">
+                <input type="email" class="settings-input" value="<%= current_user.email %>" readonly />
+              </div>
+            </div>
+
+            <div class="settings-divider"></div>
+
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <label>Password</label>
+                <span class="settings-row-hint">Change your password anytime.</span>
+              </div>
+              <div class="settings-row-control">
+                <%= link_to "Change password", edit_user_registration_path, class: "btn-ghost" %>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="notifications" class="settings-section">
+          <div class="settings-section-header">
+            <h2>Notifications</h2>
+            <p>Choose what updates you want to receive by email.</p>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-toggle-row">
+              <div class="settings-row-info">
+                <label>New insights</label>
+                <span class="settings-row-hint">Get notified when a product dashboard is refreshed with fresh signals.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" checked disabled>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+
+            <div class="settings-divider"></div>
+
+            <div class="settings-toggle-row">
+              <div class="settings-row-info">
+                <label>Weekly digest</label>
+                <span class="settings-row-hint">A summary every Monday of what's been said about your products.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" checked disabled>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+
+            <div class="settings-divider"></div>
+
+            <div class="settings-toggle-row">
+              <div class="settings-row-info">
+                <label>Product updates</label>
+                <span class="settings-row-hint">News about Conversights features and releases.</span>
+              </div>
+              <label class="switch">
+                <input type="checkbox" disabled>
+                <span class="switch-slider"></span>
+              </label>
+            </div>
+          </div>
+        </section>
+
+        <section id="appearance" class="settings-section">
+          <div class="settings-section-header">
+            <h2>Appearance</h2>
+            <p>Customize how Conversights looks on your screen.</p>
+          </div>
+
+          <div class="settings-card">
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <label>Theme</label>
+                <span class="settings-row-hint">Pick the interface color scheme.</span>
+              </div>
+              <div class="settings-row-control settings-theme-picker">
+                <label class="theme-option theme-option--active">
+                  <input type="radio" name="theme" value="light" checked>
+                  <div class="theme-swatch theme-swatch--light"></div>
+                  <span>Light</span>
+                </label>
+                <label class="theme-option">
+                  <input type="radio" name="theme" value="dark">
+                  <div class="theme-swatch theme-swatch--dark"></div>
+                  <span>Dark</span>
+                </label>
+                <label class="theme-option">
+                  <input type="radio" name="theme" value="system">
+                  <div class="theme-swatch theme-swatch--system"></div>
+                  <span>System</span>
+                </label>
+              </div>
+            </div>
+
+            <div class="settings-divider"></div>
+
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <label>Language</label>
+                <span class="settings-row-hint">Interface language for the whole app.</span>
+              </div>
+              <div class="settings-row-control">
+                <select class="settings-select" disabled>
+                  <option>English</option>
+                  <option>Français</option>
+                  <option>Español</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="integrations" class="settings-section">
+          <div class="settings-section-header">
+            <h2>Integrations</h2>
+            <p>Connect your own tools to enrich the context around your products.</p>
+          </div>
+
+          <div class="integrations-empty">
+            <div class="integrations-empty-badge">
+              <i class="fa-solid fa-clock"></i>
+              <span>Coming soon</span>
+            </div>
+            <h3>Bring your own context</h3>
+            <p>
+              Soon you'll be able to connect tools like <strong>Stripe</strong>, <strong>Slack</strong>,
+              <strong>Segment</strong>, <strong>Amplitude</strong>, or your CRM to layer first-party
+              signals on top of social media conversations — so insights are grounded in your actual
+              business and customer context.
+            </p>
+
+            <div class="integrations-teasers">
+              <div class="integration-teaser">
+                <div class="integration-teaser-icon integration-teaser-icon--stripe">
+                  <i class="fa-brands fa-stripe-s"></i>
+                </div>
+                <span>Stripe</span>
+              </div>
+              <div class="integration-teaser">
+                <div class="integration-teaser-icon integration-teaser-icon--slack">
+                  <i class="fa-brands fa-slack"></i>
+                </div>
+                <span>Slack</span>
+              </div>
+              <div class="integration-teaser">
+                <div class="integration-teaser-icon integration-teaser-icon--segment">
+                  <i class="fa-solid fa-diagram-project"></i>
+                </div>
+                <span>Segment</span>
+              </div>
+              <div class="integration-teaser">
+                <div class="integration-teaser-icon integration-teaser-icon--amplitude">
+                  <i class="fa-solid fa-chart-line"></i>
+                </div>
+                <span>Amplitude</span>
+              </div>
+              <div class="integration-teaser">
+                <div class="integration-teaser-icon integration-teaser-icon--crm">
+                  <i class="fa-solid fa-address-book"></i>
+                </div>
+                <span>CRM</span>
+              </div>
+              <div class="integration-teaser integration-teaser--more">
+                <div class="integration-teaser-icon">
+                  <i class="fa-solid fa-plus"></i>
+                </div>
+                <span>And more</span>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="billing" class="settings-section">
+          <div class="settings-section-header">
+            <h2>Billing</h2>
+            <p>Manage your plan and payment details.</p>
+          </div>
+
+          <div class="settings-plan-card">
+            <div class="settings-plan-header">
+              <span class="settings-plan-badge">Current plan</span>
+              <h3>Free</h3>
+              <p>For individual PMs trying it out.</p>
+            </div>
+            <ul class="settings-plan-features">
+              <li><i class="fa-solid fa-check"></i> Up to 3 products</li>
+              <li><i class="fa-solid fa-check"></i> Unlimited chats</li>
+              <li><i class="fa-solid fa-check"></i> Daily dashboard refresh</li>
+              <li><i class="fa-solid fa-check"></i> Social signals from all supported sources</li>
+            </ul>
+            <button type="button" class="btn-primary" disabled>Upgrade to Pro</button>
+          </div>
+        </section>
+
+        <section id="danger" class="settings-section">
+          <div class="settings-section-header">
+            <h2>Danger zone</h2>
+            <p>Irreversible actions. Proceed with caution.</p>
+          </div>
+
+          <div class="settings-card settings-card--danger">
+            <div class="settings-row">
+              <div class="settings-row-info">
+                <label>Delete account</label>
+                <span class="settings-row-hint">Permanently delete your account and all associated products, chats, and data. This cannot be undone.</span>
+              </div>
+              <div class="settings-row-control">
+                <%= button_to "Delete account",
+                              registration_path(current_user),
+                              method: :delete,
+                              data: { turbo_confirm: "Are you absolutely sure? This cannot be undone." },
+                              class: "btn-danger",
+                              form: { style: "display: inline-block;" } %>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</div>

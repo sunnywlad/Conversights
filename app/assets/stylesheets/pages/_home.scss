@@ -37,8 +37,27 @@
   }
 }
 
-.dashboard-new-btn {
+.dashboard-breadcrumb-link {
   display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: $gray;
+  text-decoration: none;
+  transition: color 0.15s;
+
+  &:hover {
+    color: $black;
+    text-decoration: none;
+  }
+}
+
+.dashboard-breadcrumb-separator {
+  font-size: 0.625rem !important;
+  color: $light-gray;
+}
+
+.dashboard-new-btn {
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.5rem 1rem;
@@ -50,10 +69,15 @@
   font-weight: 500;
   cursor: pointer;
   transition: all 0.15s;
+  text-decoration: none;
 
-  &:hover {
+  &:hover,
+  &:focus,
+  &:active {
     border-color: $dark-gray;
     background: $lighter-gray;
+    color: $dark;
+    text-decoration: none;
   }
 }
 
