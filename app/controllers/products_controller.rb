@@ -36,6 +36,7 @@ class ProductsController < ApplicationController
 
   def refresh_dashboard
     @product = current_user.products.find(params[:id])
+    clean_empty_chats(@product)
 
     DashboardRefreshService.new(@product).call
     redirect_to product_path(@product), notice: "Dashboard mis à jour !"
@@ -45,5 +46,9 @@ class ProductsController < ApplicationController
 
   def product_params
     params.require(:product).permit(:name, :brand)
+  end
+
+  def clean_empty_chats(product)
+    product.chats.left_joins(:messages).where(messages: { id:nil}).destroy_all
   end
 end
