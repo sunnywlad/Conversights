@@ -7,15 +7,18 @@ class AssistantMessageService
 
   def call
     @ruby_llm_chat = RubyLLM.chat(model: "gpt-4o-mini")
-    posts_db_tool = PostsDatabaseTool.new
+    @posts_db_tool = PostsDatabaseTool.new
     build_conversation_history
-    if !@chat.dashboard_card.nil? && @chat.messages.count == 0
-      response = @ruby_llm_chat.with_tools(posts_db_tool).with_instructions(instructions).ask("Please provide a more thourough analysis of the social media posts related to the dashboard card theme, following the detailed instructions for dashboard card analysis.")
+    @assistant_message = @chat.messages.create(role: "assistant", content: "")
+
+    if !@chat.dashboard_card.nil? && @chat.messages.count <= 1
+      send_question("Please provide a more thourough analysis of the social media posts related to the dashboard card theme, following the detailed instructions for dashboard card analysis.")
     else
-      response = @ruby_llm_chat.with_tools(posts_db_tool).with_instructions(instructions).ask(@user_message.content)
+      send_question(@user_message.content)
     end
-    @chat.messages.create(role: "assistant", content: response.content)
+
     @chat.generate_title_from_first_message
+
   rescue StandardError => e
     Rails.logger.error "MessagesController LLM error: #{e.class}: #{e.message}"
     @chat.messages.create(
@@ -25,6 +28,21 @@ class AssistantMessageService
   end
 
   private
+
+  def send_question(question)
+    @ruby_llm_chat.with_tools(@posts_db_tool).with_instructions(instructions)
+
+    @ruby_llm_chat.ask(question) do |chunk|
+      next if chunk.content.blank?
+
+      @assistant_message.content += chunk.content
+      broadcast_replace(@assistant_message)
+    end
+  end
+
+  def broadcast_replace(message)
+    Turbo::StreamsChannel.broadcast_replace_to(@chat, target: ActionView::RecordIdentifier.dom_id(message), partial: "messages/message", locals: { message: message })
+  end
 
   def product_context
     <<~CTX
@@ -50,6 +68,7 @@ class AssistantMessageService
       return
     else
       @chat.messages.where.not(id: @user_message.id).order(:created_at).each do |message|
+        next if message.content.blank?
         @ruby_llm_chat.add_message(role: message.role, content: message.content)
       end
     end
