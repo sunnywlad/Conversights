@@ -1,8 +1,11 @@
 class DashboardRefreshService
   TITLE_TO_KEY = {
-    "Overall Sentiment"              => "overall_sentiment",
-    "Frustrations & Pain Points"     => "frustrations_and_pain_points",
-    "Strengths & Positive Feedback"  => "strengths_and_positive_feedback"
+    "Key Theme 1"                => "key_theme_1",
+    "Key Theme 2"                => "key_theme_2",
+    "Key Theme 3"                => "key_theme_3",
+    "Frustrations & Pain Points" => "frustrations_and_pain_points",
+    "Strengths & Positive Feedback" => "strengths_and_positive_feedback",
+    "Suggested Improvements"     => "suggested_improvements",
   }.freeze
 
   def initialize(product)
