@@ -42,25 +42,10 @@
 
     <section class="product-show-section">
 
+      <%= turbo_stream_from @product %>
       <% if @dashboard_cards.any? %>
-        <div class="insight-grid">
-          <% @dashboard_cards.each_with_index do |card, i| %>
-            <div class="insight-card">
-              <%= button_to product_chats_path(@product),
-                            method: :post,
-                            class: "insight-card-title",
-                            params: { dashboard_card_id: card.id } do %>
-                <%= card.title %>
-              <% end %>
-              <div class="insight-card-content">
-                <% if card.content.present? %>
-                  <%= raw(render_markdown(card.content)) %>
-                <% else %>
-                  <p class="insight-card-empty">No data yet. Click Refresh to analyze.</p>
-                <% end %>
-              </div>
-            </div>
-          <% end %>
+        <div class="insight-grid" id="dashboard-cards">
+          <%= render @dashboard_cards %>
         </div>
       <% else %>
         <div class="products-empty">

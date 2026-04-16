@@ -1,0 +1,15 @@
+<div class="insight-card" id="<%= dom_id(dashboard_card) %>">
+  <%= button_to product_chats_path(dashboard_card.product),
+                method: :post,
+                class: "insight-card-title",
+                params: { dashboard_card_id: dashboard_card.id } do %>
+    <%= dashboard_card.title %>
+  <% end %>
+  <div class="insight-card-content">
+    <% if dashboard_card.content.present? %>
+      <%= raw(render_markdown(dashboard_card.content)) %>
+    <% else %>
+      <p class="insight-card-empty">No data yet. Click Refresh to analyze.</p>
+    <% end %>
+  </div>
+</div>
