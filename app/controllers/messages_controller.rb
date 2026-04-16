@@ -9,9 +9,15 @@ class MessagesController < ApplicationController
 
     if @user_message.save
       AssistantMessageJob.perform_later(@chat.id, user_message_id: @user_message.id)
-      redirect_to chat_path(@chat)
+      respond_to do |format|
+        format.turbo_stream
+        format.html { redirect_to chat_path(@chat) }
+      end
     else
-      render "chats/show", status: :unprocessable_entity
+      respond_to do |format|
+        format.turbo_stream { render turbo_stream: turbo_stream.replace("new_message_area", partial: "messages/form", locals: { chat: @chat, message: @user_message }) }
+        format.html { render "chats/show", status: :unprocessable_entity }
+      end
     end
   end
 

@@ -77,56 +77,13 @@
           </div>
         </div>
       <% else %>
-        <% @chat.messages.each do |message| %>
-          <div class="chat-message chat-message--<%= message.role %>">
-            <div class="chat-message-avatar">
-              <% if message.role == "user" %>
-                <i class="fa-solid fa-user"></i>
-              <% else %>
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-              <% end %>
-            </div>
-            <div class="chat-message-content">
-              <div class="chat-message-meta">
-                <span class="chat-message-author">
-                  <%= message.role == "user" ? "You" : "Conversights" %>
-                </span>
-                <span class="chat-message-time">
-                  <%= message.created_at.strftime("%H:%M") %>
-                </span>
-              </div>
-              <div class="chat-message-bubble">
-                <%= raw(render_markdown(message.content)) %>
-              </div>
-            </div>
-          </div>
-        <% end %>
+        <%= render "messages/messages", messages: @chat.messages %>
       <% end %>
     </div>
 
-    <div class="chat-composer">
-      <%= simple_form_for [@chat, @message], html: { class: "chat-composer-form" } do |f| %>
-        <div class="chat-composer-inner">
-          <%= f.input :content,
-                      as: :text,
-                      label: false,
-                      input_html: {
-                        class: "chat-composer-input",
-                        placeholder: "Ask anything about #{@chat.product.name}...",
-                        rows: 1,
-                        data: { "chat-suggestions-target": "input" }
-                      } %>
-          <div class="chat-composer-footer">
-            <div class="chat-composer-hint">
-              <i class="fa-solid fa-wand-magic-sparkles"></i>
-              <span>Powered by social media signals</span>
-            </div>
-            <button type="submit" class="chat-composer-submit">
-              <i class="fa-solid fa-arrow-up"></i>
-            </button>
-          </div>
-        </div>
-      <% end %>
+    <div class="chat-composer" id="new_message_area">
+      <%= render "messages/form", chat: @chat, message: @message %>
     </div>
+
   </div>
 </div>

@@ -1,0 +1,22 @@
+<%= simple_form_for [chat, message], html: { class: "chat-composer-form" } do |f| %>
+  <div class="chat-composer-inner">
+    <%= f.input :content,
+                as: :text,
+                label: false,
+                input_html: {
+                  class: "chat-composer-input",
+                  placeholder: "Ask anything about #{chat.product.name}...",
+                  rows: 1,
+                  data: { "chat-suggestions-target": "input" }
+                } %>
+    <div class="chat-composer-footer">
+      <div class="chat-composer-hint">
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+        <span>Powered by social media signals</span>
+      </div>
+      <button type="submit" class="chat-composer-submit">
+        <i class="fa-solid fa-arrow-up"></i>
+      </button>
+    </div>
+  </div>
+<% end %>

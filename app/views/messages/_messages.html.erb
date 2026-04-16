@@ -1,0 +1,24 @@
+<% messages.each do |message| %>
+  <div class="chat-message chat-message--<%= message.role %>" id="<%= dom_id(message) %>">
+    <div class="chat-message-avatar">
+      <% if message.role == "user" %>
+        <i class="fa-solid fa-user"></i>
+      <% else %>
+        <i class="fa-solid fa-wand-magic-sparkles"></i>
+      <% end %>
+    </div>
+    <div class="chat-message-content">
+      <div class="chat-message-meta">
+        <span class="chat-message-author">
+          <%= message.role == "user" ? "You" : "Conversights" %>
+        </span>
+        <span class="chat-message-time">
+          <%= message.created_at.strftime("%H:%M") %>
+        </span>
+      </div>
+      <div class="chat-message-bubble">
+        <%= raw(render_markdown(message.content)) %>
+      </div>
+    </div>
+  </div>
+<% end %>
