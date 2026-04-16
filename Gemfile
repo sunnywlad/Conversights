@@ -55,6 +55,7 @@ gem "google-apis-youtube_v3"
 gem "kramdown"
 gem "rouge"
 gem "kramdown-parser-gfm"
+gem "solid_queue"
 
 group :development, :test do
   gem "dotenv-rails"

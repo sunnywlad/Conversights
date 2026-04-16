@@ -41,19 +41,17 @@
     </header>
 
     <section class="product-show-section">
-      <div class="product-show-section-header">
-        <h2>Dashboard insights</h2>
-        <span class="products-count"><%= @dashboard_cards.size %></span>
-      </div>
 
       <% if @dashboard_cards.any? %>
         <div class="insight-grid">
           <% @dashboard_cards.each_with_index do |card, i| %>
             <div class="insight-card">
-              <div class="insight-card-icon insight-card-icon--<%= ['blue', 'green', 'purple', 'orange'][i % 4] %>">
-                <i class="fa-solid fa-chart-simple"></i>
-              </div>
-              <h3 class="insight-card-title"><%= card.title %></h3>
+              <%= button_to product_chats_path(@product),
+                            method: :post,
+                            class: "insight-card-title",
+                            params: { dashboard_card_id: card.id } do %>
+                <%= card.title %>
+              <% end %>
               <div class="insight-card-content">
                 <% if card.content.present? %>
                   <%= raw(render_markdown(card.content)) %>
@@ -99,7 +97,7 @@
                   <i class="fa-solid fa-comment"></i>
                 </div>
                 <div class="chat-item-content">
-                  <h4><%= chat.title.presence || "Untitled" %></h4>
+                  <h4><%= chat.title.presence || Chat::DEFAULT_TITLE %></h4>
                   <p><%= chat.messages.count %> messages</p>
                 </div>
                 <i class="fa-solid fa-chevron-right chat-item-chevron"></i>
