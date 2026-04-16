@@ -14,7 +14,7 @@ class ChatsController < ApplicationController
       @chat = existing_chat
       redirect_to chat_path(@chat)
     elsif @chat.save
-      AssistantMessageService.new(@chat).call if @chat.dashboard_card.present?
+      AssistantMessageJob.perform_later(@chat.id) if @chat.dashboard_card.present?
       redirect_to chat_path(@chat)
     else
       redirect_to product_path(@product), alert: "Erreur lors de la création du chat"

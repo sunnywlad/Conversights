@@ -22,7 +22,8 @@ class ProductsController < ApplicationController
     if @product.save
       titles = "Key Theme 1, Key Theme 2, Key Theme 3, Frustrations & Pain Points, Strengths & Positive Feedback, Suggested Improvements".split(", ")
       titles.each { |title| @product.dashboard_cards.create(title: title) }
-      redirect_to products_path, notice: "Product created successfully.", status: :see_other
+      DashboardRefreshJob.perform_later(@product.id)
+      redirect_to products_path, notice: "Product created successfully, dashboard being updated !", status: :see_other
     else
       render :new, status: :unprocessable_entity
     end
@@ -38,8 +39,8 @@ class ProductsController < ApplicationController
     @product = current_user.products.find(params[:id])
     clean_empty_chats(@product)
 
-    DashboardRefreshService.new(@product).call
-    redirect_to product_path(@product), notice: "Dashboard mis à jour !"
+    DashboardRefreshJob.perform_later(@product.id)
+    redirect_to product_path(@product), notice: "Dashboard being updated !"
   end
 
   private

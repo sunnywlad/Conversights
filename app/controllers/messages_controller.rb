@@ -8,7 +8,7 @@ class MessagesController < ApplicationController
     @user_message.role = "user"
 
     if @user_message.save
-      AssistantMessageService.new(@chat, user_message: @user_message).call
+      AssistantMessageJob.perform_later(@chat.id, user_message_id: @user_message.id)
       redirect_to chat_path(@chat)
     else
       render "chats/show", status: :unprocessable_entity
