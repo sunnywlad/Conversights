@@ -31,13 +31,18 @@ class AssistantMessageService
 
   def send_question(question)
     @ruby_llm_chat.with_tools(@posts_db_tool).with_instructions(instructions)
+    chunk_counter = 0
 
     @ruby_llm_chat.ask(question) do |chunk|
       next if chunk.content.blank?
 
       @assistant_message.content += chunk.content
-      broadcast_replace(@assistant_message)
+      chunk_counter += 1
+      broadcast_replace(@assistant_message) if chunk_counter % 5 == 0
     end
+
+    broadcast_replace(@assistant_message)
+    @assistant_message.save!
   end
 
   def broadcast_replace(message)

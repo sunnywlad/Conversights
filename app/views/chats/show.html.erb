@@ -8,7 +8,7 @@
       <i class="fa-solid fa-chevron-right dashboard-breadcrumb-separator"></i>
       <%= link_to @chat.product.name, product_path(@chat.product), class: "dashboard-breadcrumb-link" %>
       <i class="fa-solid fa-chevron-right dashboard-breadcrumb-separator"></i>
-      <span><%= @chat.title %></span>
+      <span id="chat_title"><%= @chat.title %></span>
     </div>
     <div class="dashboard-topbar-actions">
       <%= link_to product_path(@chat.product), class: "dashboard-new-btn" do %>
@@ -49,7 +49,8 @@
             <i class="fa-solid fa-wand-magic-sparkles"></i>
           </div>
           <h2>Ask anything about <%= @chat.product.name %></h2>
-          <p>Get insights from real YouTube conversations in seconds. <span class="chat-empty-note">More sources coming soon.</span></p>
+          <p>Get insights from real YouTube conversations in seconds.</p>
+          <% unless @chat.dashboard_card.present? %>
           <div class="chat-suggestions">
             <button type="button" class="chat-suggestion"
                     data-action="click->chat-suggestions#fill"
@@ -76,6 +77,7 @@
               <span>Vs competitors</span>
             </button>
           </div>
+          <% end %>
         </div>
       <% else %>
         <%= render "messages/messages", messages: @chat.messages %>
