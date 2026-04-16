@@ -352,16 +352,10 @@
 }
 
 // Corriger le bouton Log out en mode fermé
+// Corriger le bouton Log out en mode fermé
 .sidebar:not(:hover) .sidebar-logout-btn {
   border: none;
   background: none;
-  padding: 0;
-}
-
-.sidebar:not(:hover) .sidebar-logout-btn button {
-  justify-content: center;
   padding: 0.5rem 0.75rem;
-  padding-left: 20px;
-  border: none;
-  background: none;
+  justify-content: flex-start;
 }
