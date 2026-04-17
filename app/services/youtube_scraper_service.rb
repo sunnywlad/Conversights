@@ -4,7 +4,6 @@ class YoutubeScraperService
   def initialize(name:, brand:, query: nil)
     @youtube_service = Google::Apis::YoutubeV3::YouTubeService.new
     @youtube_service.key = ENV['YOUTUBE_API_KEY']
-    @name = name
     @query = query ? "#{query} #{name} #{brand}" : "#{name} #{brand}"
   end
 
@@ -19,17 +18,13 @@ class YoutubeScraperService
 
   def fetch_video_ids(limit, page_token = nil)
     response = @youtube_service.list_searches(
-      'id,snippet',
+      'id',
       q: @query,
       type: 'video',
       max_results: limit,
       page_token: page_token
     )
-    video_ids = response.items.filter_map do |item|
-      if item.snippet.title.downcase.include?(@name.downcase) || item.snippet.description.to_s.downcase.include?(@name.downcase)
-        item.id.video_id
-      end
-    end
+    video_ids = response.items.map { |item| item.id.video_id }
     [video_ids, response.next_page_token]
   end
 
