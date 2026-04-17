@@ -69,13 +69,14 @@ class AssistantMessageService
   end
 
   def build_conversation_history
-    if @user_message.nil?
-      return
-    else
-      @chat.messages.where.not(id: @user_message.id).order(:created_at).each do |message|
-        next if message.content.blank?
-        @ruby_llm_chat.add_message(role: message.role, content: message.content)
-      end
+    return if @user_message.nil?
+
+    last_role = nil
+    @chat.messages.where.not(id: @user_message.id).order(:created_at).each do |message|
+      next if message.content.blank?
+      next if message.role == last_role
+      @ruby_llm_chat.add_message(role: message.role, content: message.content)
+      last_role = message.role
     end
   end
 end
