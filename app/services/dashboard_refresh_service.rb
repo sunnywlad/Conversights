@@ -46,9 +46,16 @@ class DashboardRefreshService
   end
 
   def user_message(cards)
+    first_time = cards.all? { |c| c.last_enriched_at.nil? }
+
     cards_context = cards.map do |card|
-      posts = PostsDatabaseService.new(@product, card.title).call
-      posts_text = posts.map { |p| p.content }.join("\n---\n")
+      if first_time
+        posts = Post.where(product_id: @product.id).order(created_at: :desc).limit(10)
+        posts_text = posts.map(&:content).join("\n---\n")
+      else
+        posts = PostsDatabaseService.new(@product, card.title).call
+        posts_text = posts.map(&:content).join("\n---\n")
+      end
       "Card: #{card.title}\nCurrent content: #{card.content}\nRelevant comments:\n#{posts_text}"
     end.join("\n\n===\n\n")
 

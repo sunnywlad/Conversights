@@ -23,7 +23,7 @@ class ProductsController < ApplicationController
       titles = "Key Theme 1, Key Theme 2, Key Theme 3, Frustrations & Pain Points, Strengths & Positive Feedback, Suggested Improvements".split(", ")
       titles.each { |title| @product.dashboard_cards.create(title: title) }
       DashboardRefreshJob.perform_later(@product.id)
-      redirect_to products_path, notice: "Product created successfully, dashboard being updated !", status: :see_other
+      redirect_to product_path(@product), notice: "Product created successfully, dashboard being updated !", status: :see_other
     else
       render :new, status: :unprocessable_entity
     end
