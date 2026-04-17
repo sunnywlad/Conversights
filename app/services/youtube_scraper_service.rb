@@ -4,6 +4,7 @@ class YoutubeScraperService
   def initialize(name:, brand:)
     @youtube_service = Google::Apis::YoutubeV3::YouTubeService.new
     @youtube_service.key = ENV['YOUTUBE_API_KEY']
+    @name = name
     @query = "#{name} #{brand}"
   end
 
@@ -20,12 +21,16 @@ class YoutubeScraperService
 
   def fetch_video_ids(limit)
     response = @youtube_service.list_searches(
-      'id',
+      'id,snippet',
       q: @query,
       type: 'video',
       max_results: limit
     )
-    response.items.map { |item| item.id.video_id }
+    response.items.filter_map do |item|
+      if item.snippet.title.include?(@name) || item.snippet.description.to_s.include?(@name)
+        item.id.video_id
+      end
+    end
   end
 
   def fetch_comments(video_id)
