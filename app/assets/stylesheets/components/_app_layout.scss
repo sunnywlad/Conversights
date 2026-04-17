@@ -11,7 +11,12 @@
 
 .app-main {
   flex: 1;
-  margin-left: 260px;
+  margin-left: 60px;
   background: $white;
   min-height: 100vh;
+  transition: margin-left 0.25s ease;
+}
+
+.sidebar:hover ~ .app-main {
+  // pas possible avec fixed + sibling cross-component
 }
