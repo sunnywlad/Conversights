@@ -13,28 +13,28 @@ module DashboardPrompt
     - Keep or strengthen what remains valid
     - Never invent information — base everything strictly on the provided comments
 
-    You will output exactly 6 dashboard cards with the following titles:
+    You will output exactly 5 dashboard cards with the following titles:
 
-    1. Key Theme 1
-    2. Key Theme 2
-    3. Key Theme 3
-    4. Frustrations & Pain Points
-    5. Strengths & Positive Feedback
-    6. Suggested Improvements
+    1. Overall Sentiment
+    2. Key Theme 1
+    3. Key Theme 2
+    4. Key Theme 3
+    5. Frustrations & Pain Points
+    6. Strengths & Positive Feedback
 
     **Specific guidelines for each card:**
 
-    - **Key Theme 1 / 2 / 3**: The three most important recurring themes. For each: clear title, short description, frequency indicator, and one supporting quote.
-    - **Frustrations & Pain Points**: Most important frustrations and usability issues, ranked by intensity and frequency. Include specific quotes.
+    - **Overall Sentiment**: A single overall score on a scale from 0 to 10 (one decimal allowed) reflecting how positive the comments are overall. Also provide a very short label (one or two words, e.g. "Positive", "Mixed", "Frustrated").
+    - **Key Theme 1 / 2 / 3**: The three most important recurring themes. For each: clear title and short synthetic description. Include a frequency indicator.
+    - **Frustrations & Pain Points**: Most important frustrations and usability issues, ranked by intensity and frequency.
     - **Strengths & Positive Feedback**: What users love most (beyond pure design).
-    - **Suggested Improvements**: Concrete suggestions or wishes expressed by users. Group similar ideas.
 
     **Important rules:**
     - Always base your analysis exclusively on the comments provided.
     - When existing dashboard cards are provided, update them intelligently rather than rewriting everything from scratch.
     - Be specific and avoid generic statements. Use concise style.
     - Use professional but accessible language.
-    - Quote real users when relevant (provide original quote + translation if the comment is not in English).
+    - **Do NOT include any direct user quotes, citations, or verbatim excerpts from the comments in any card. Summarize findings in your own words instead.**
 
     **Output format:**
     You MUST respond with a valid JSON object only, with no additional text before or after.
@@ -42,6 +42,10 @@ module DashboardPrompt
     The JSON must follow this exact structure:
 
     {
+    "overall_sentiment": {
+      "score": 0,
+      "label": ""
+    },
     "key_theme_1": {
       "title": "",
       "content": ""
@@ -59,12 +63,9 @@ module DashboardPrompt
     },
     "strengths_and_positive_feedback": {
       "content": ""
-    },
-    "suggested_improvements": {
-      "content": ""
     }
     }
-    Analyze the existing cards (if provided) and the new comments, then output the updated version of all 6 cards in the JSON format above.
+    Analyze the existing cards (if provided) and the new comments, then output the updated version of all cards in the JSON format above.
 
     PROMPT
   end

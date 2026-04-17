@@ -12,7 +12,7 @@
       <%= button_to refresh_dashboard_product_path(@product),
                     method: :post,
                     data: { turbo: false },
-                    class: "dashboard-new-btn",
+                    class: "dashboard-new-btn dashboard-primary-btn",
                     form: { style: "display: inline-block;" } do %>
         <i class="fa-solid fa-arrows-rotate"></i>
         <span>Refresh</span>
@@ -110,7 +110,12 @@
                         form: { style: "display: inline-block;" } %>
         </div>
       <% end %>
-      <%= link_to "See the comments", product_posts_path(@product), class: "dashboard-new-btn" %>
+      <div class="product-show-posts-link">
+        <%= link_to product_posts_path(@product), class: "dashboard-new-btn" do %>
+          <i class="fa-solid fa-comments"></i>
+          <span>See the comments</span>
+        <% end %>
+      </div>
     </section>
   </div>
 </div>

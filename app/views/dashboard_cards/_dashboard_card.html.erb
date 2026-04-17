@@ -1,15 +1,37 @@
-<div class="insight-card" id="<%= dom_id(dashboard_card) %>">
-  <%= button_to product_chats_path(dashboard_card.product),
-                method: :post,
-                class: "insight-card-title",
-                params: { dashboard_card_id: dashboard_card.id } do %>
-    <%= dashboard_card.title %>
-  <% end %>
+<% visual = insight_card_visual(dashboard_card.title) %>
+<%= button_to product_chats_path(dashboard_card.product),
+              method: :post,
+              class: "insight-card #{'insight-card--score' if dashboard_card.title == 'Overall Sentiment'}",
+              params: { dashboard_card_id: dashboard_card.id },
+              form: { class: "insight-card-form", id: dom_id(dashboard_card) } do %>
+  <div class="insight-card-header">
+    <div class="insight-card-icon insight-card-icon--<%= visual[:color] %>">
+      <i class="fa-solid <%= visual[:icon] %>"></i>
+    </div>
+    <span class="insight-card-cta">
+      <i class="fa-solid fa-comment"></i>
+      <span>Ask</span>
+    </span>
+  </div>
+  <h3 class="insight-card-title"><%= dashboard_card.title %></h3>
   <div class="insight-card-content">
-    <% if dashboard_card.content.present? %>
+    <% if dashboard_card.title == "Overall Sentiment" %>
+      <% sentiment = (JSON.parse(dashboard_card.content) rescue nil) if dashboard_card.content.present? %>
+      <% if sentiment && sentiment["score"].present? %>
+        <div class="sentiment-score">
+          <span class="sentiment-score-number"><%= sentiment["score"] %></span>
+          <span class="sentiment-score-scale">/10</span>
+        </div>
+        <% if sentiment["label"].present? %>
+          <div class="sentiment-score-label"><%= sentiment["label"] %></div>
+        <% end %>
+      <% else %>
+        <p class="insight-card-empty">No data yet. Click Refresh to analyze.</p>
+      <% end %>
+    <% elsif dashboard_card.content.present? %>
       <%= raw(render_markdown(dashboard_card.content)) %>
     <% else %>
       <p class="insight-card-empty">No data yet. Click Refresh to analyze.</p>
     <% end %>
   </div>
-</div>
+<% end %>

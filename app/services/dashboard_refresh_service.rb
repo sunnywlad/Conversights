@@ -1,11 +1,11 @@
 class DashboardRefreshService
   TITLE_TO_KEY = {
-    "Key Theme 1"                => "key_theme_1",
-    "Key Theme 2"                => "key_theme_2",
-    "Key Theme 3"                => "key_theme_3",
-    "Frustrations & Pain Points" => "frustrations_and_pain_points",
+    "Overall Sentiment"             => "overall_sentiment",
+    "Key Theme 1"                   => "key_theme_1",
+    "Key Theme 2"                   => "key_theme_2",
+    "Key Theme 3"                   => "key_theme_3",
+    "Frustrations & Pain Points"    => "frustrations_and_pain_points",
     "Strengths & Positive Feedback" => "strengths_and_positive_feedback",
-    "Suggested Improvements"     => "suggested_improvements",
   }.freeze
 
   def initialize(product)
@@ -48,9 +48,8 @@ class DashboardRefreshService
       next unless key && llm_response[key]
 
       data = llm_response[key]
-      new_title = data["title"].present? ? data["title"] : card.title
-      raw_content = data["content"]
-      content = raw_content.is_a?(String) ? raw_content : raw_content.to_json
+      new_title = data["title"].presence || card.title
+      content = serialize_content(key, data)
 
       card.update!(title: new_title, content: content)
       Turbo::StreamsChannel.broadcast_replace_to(
@@ -59,6 +58,15 @@ class DashboardRefreshService
         partial: "dashboard_cards/dashboard_card",
         locals: { dashboard_card: card }
       )
+    end
+  end
+
+  def serialize_content(key, data)
+    if key == "overall_sentiment"
+      { score: data["score"], label: data["label"] }.to_json
+    else
+      raw = data["content"]
+      raw.is_a?(String) ? raw : raw.to_json
     end
   end
 end
