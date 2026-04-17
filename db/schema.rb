@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_16_195608) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_17_094030) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "vector"
 
   create_table "chats", force: :cascade do |t|
     t.string "title"
@@ -52,6 +53,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_16_195608) do
     t.integer "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.vector "embedding", limit: 1536
     t.index ["product_id"], name: "index_posts_on_product_id"
   end
 

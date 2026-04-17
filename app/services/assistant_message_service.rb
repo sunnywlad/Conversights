@@ -7,7 +7,8 @@ class AssistantMessageService
 
   def call
     @ruby_llm_chat = RubyLLM.chat(model: "gpt-4o-mini")
-    @posts_db_tool = PostsDatabaseTool.new
+    text = @user_message ? @user_message.content : @chat.dashboard_card.content
+    @posts_db_service = PostsDatabaseService.new(@product, text)
     build_conversation_history
     @assistant_message = @chat.messages.create(role: "assistant", content: "")
 
@@ -30,7 +31,7 @@ class AssistantMessageService
   private
 
   def send_question(question)
-    @ruby_llm_chat.with_tools(@posts_db_tool).with_instructions(instructions)
+    @ruby_llm_chat.with_instructions(instructions)
     chunk_counter = 0
 
     @ruby_llm_chat.ask(question) do |chunk|
@@ -55,16 +56,25 @@ class AssistantMessageService
       - Product ID: #{@product.id}
       - Name: #{@product.name}
       - Brand: #{@product.brand}
-
-      IMPORTANT: whenever you call the PostsDatabaseTool, you MUST pass product_id=#{@product.id} as its `product_id` parameter. Do not invent or change this ID.
     CTX
+  end
+
+  def post_context(post)
+    <<~POST
+      Post ID: #{post.id}
+      Content: #{post.content}
+    POST
+  end
+
+  def build_posts_context(posts)
+    posts.map { |post| post_context(post) }.join("\n\n---\n\n")
   end
 
   def instructions
     if @chat.dashboard_card.present?
-      [DashboardCardPrompt.content, @chat.dashboard_card.content, product_context].join("\n\n---\n\n")
+      [DashboardCardPrompt.content, @chat.dashboard_card.content, product_context, build_posts_context(@posts_db_service.call) ].join("\n\n---\n\n")
     else
-      [ChattingPrompt.content, product_context].join("\n\n---\n\n")
+      [ChattingPrompt.content, product_context, build_posts_context(@posts_db_service.call) ].join("\n\n---\n\n")
     end
   end
 

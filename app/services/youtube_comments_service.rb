@@ -22,13 +22,17 @@ class YoutubeCommentsService
   private
 
   def store_comments(comments)
+    posts_to_be_embedded = []
     comments.each do |comment_data|
-      Post.find_or_create_by!(
+      post = Post.find_or_create_by!(
         content: comment_data,
         source: "youtube",
         product_id: @product.id
       )
+      posts_to_be_embedded << post if post.previously_new_record?
     end
-
+    posts_to_be_embedded.each_with_index do |post, index|
+      SetEmbeddingJob.set(wait: 3 * index.seconds).perform_later(post)
+    end
   end
 end
