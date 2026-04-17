@@ -1,20 +1,24 @@
 class YoutubeCommentsService
-  def initialize(product, query: nil, order: 'relevance')
+  def initialize(product, query: nil, target: 15)
     @product = product
     @query = query
-    @order = order
+    @target = target
   end
 
   def call
-    return { error: "No name or brand provided" } unless @product.name.present? && @product.brand.present?
-    scraper = YoutubeScraperService.new(name: @product.name, brand: @product.brand, query: @query, order: @order)
+    return [] unless @product.name.present? && @product.brand.present?
+    scraper = YoutubeScraperService.new(name: @product.name, brand: @product.brand, query: @query)
 
-    data = scraper.call(10).flatten
-    data = data.first(20)
+    new_count = 0
+    page_token = nil
+    max_iterations = 5
 
-    puts "📤 DATA ENVOYÉE AU LLM : #{data.inspect}"
-
-    store_comments(data)
+    max_iterations.times do
+      break if new_count >= @target
+      comments, page_token = scraper.call(3, page_token: page_token)
+      new_count += store_comments(comments)
+      break if page_token.nil?
+    end
 
   rescue StandardError => e
     Rails.logger.error "YoutubeCommentsFetcher error: #{e.message}"
@@ -36,5 +40,6 @@ class YoutubeCommentsService
     posts_to_be_embedded.each_with_index do |post, index|
       SetEmbeddingJob.set(wait: 3 * index.seconds).perform_later(post)
     end
+    posts_to_be_embedded.count
   end
 end
