@@ -14,7 +14,7 @@ class ChatsController < ApplicationController
       @chat = existing_chat
       redirect_to chat_path(@chat)
     elsif @chat.save
-      DbEnrichmentJob.perform_later(@product, @chat.dashboard_card.title, chat: @chat, first_enrichment: true) if @chat.dashboard_card.present?
+      DbEnrichmentJob.perform_later(@product, @chat.dashboard_card.title, chat: @chat) if @chat.dashboard_card.present?
       AssistantMessageJob.perform_later(@chat.id) if @chat.dashboard_card.present?
       redirect_to chat_path(@chat)
     else
@@ -26,7 +26,7 @@ class ChatsController < ApplicationController
     @chat = current_user.chats.find(params[:id])
     @message = Message.new
     if @chat.dashboard_card.present? && @chat.last_enriched_at.nil?
-      DbEnrichmentJob.perform_later(@chat.product, @chat.dashboard_card.title, chat: @chat, first_enrichment: true)
+      DbEnrichmentJob.perform_later(@chat.product, @chat.dashboard_card.title, chat: @chat)
     elsif @chat.dashboard_card.present? && @chat.last_enriched_at < 24.hours.ago
       DbEnrichmentJob.perform_later(@chat.product, @chat.dashboard_card.title, chat: @chat)
     elsif !@chat.last_enriched_at.nil? && @chat.last_enriched_at < 24.hours.ago

@@ -24,7 +24,7 @@ class Chat < ApplicationRecord
     end
     update(title: response.content)
     unless dashboard_card.present?
-      DbEnrichmentJob.perform_later(product, title, chat: self, first_enrichment: true)
+      DbEnrichmentJob.perform_later(product, title, chat: self)
     end
   end
 end
