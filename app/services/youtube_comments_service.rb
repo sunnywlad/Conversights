@@ -1,11 +1,13 @@
 class YoutubeCommentsService
-  def initialize(product)
+  def initialize(product, query: nil, order: 'relevance')
     @product = product
+    @query = query
+    @order = order
   end
 
   def call
     return { error: "No name or brand provided" } unless @product.name.present? && @product.brand.present?
-    scraper = YoutubeScraperService.new(name: @product.name, brand: @product.brand)
+    scraper = YoutubeScraperService.new(name: @product.name, brand: @product.brand, query: @query, order: @order)
 
     data = scraper.call(10).flatten
     data = data.first(20)

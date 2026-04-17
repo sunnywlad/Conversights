@@ -19,6 +19,7 @@ class AssistantMessageService
     end
 
     @chat.generate_title_from_first_message
+    
 
   rescue StandardError => e
     Rails.logger.error "MessagesController LLM error: #{e.class}: #{e.message}"

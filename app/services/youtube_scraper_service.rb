@@ -1,11 +1,12 @@
 require 'google/apis/youtube_v3'
 
 class YoutubeScraperService
-  def initialize(name:, brand:)
+  def initialize(name:, brand:, query: nil, order: 'relevance')
     @youtube_service = Google::Apis::YoutubeV3::YouTubeService.new
     @youtube_service.key = ENV['YOUTUBE_API_KEY']
     @name = name
-    @query = "#{name} #{brand}"
+    @query = query ? "#{query} #{name} #{brand}" : "#{name} #{brand}"
+    @order = order
   end
 
   def call (max_videos = 3)
@@ -39,7 +40,7 @@ class YoutubeScraperService
         'snippet',
         video_id: video_id,
         max_results: 15,
-        order: 'relevance'
+        order: @order
       )
       response.items.map do |item|
         raw_text = item.snippet.top_level_comment.snippet.text_original

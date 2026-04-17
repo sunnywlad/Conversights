@@ -23,5 +23,8 @@ class Chat < ApplicationRecord
       response = RubyLLM.chat.with_instructions(TITLE_PROMPT1).ask(first_user_message.content)
     end
     update(title: response.content)
+    unless dashboard_card.present?
+      DbEnrichmentJob.perform_later(product, title, chat: self, order: 'relevance')
+    end
   end
 end

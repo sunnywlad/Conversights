@@ -14,11 +14,11 @@ class DashboardRefreshService
 
   def call
     cards = DashboardCard.where(product: @product)
-    posts = FetchYoutubeCommentsService.new(@product).call
+    enrich_database(cards)
 
     chat = RubyLLM.chat(model: "gpt-4o-mini")
     chat.with_instructions(DashboardPrompt.content)
-    response = chat.ask(user_message(cards, posts))
+    response = chat.ask(user_message(cards))
 
     update_cards(cards, JSON.parse(response.content))
 
@@ -32,13 +32,29 @@ class DashboardRefreshService
 
   private
 
-  def user_message(cards, posts)
-    <<~MSG
-      Existing dashboard cards:
-      #{cards.map { |c| { title: c.title, content: c.content } }.to_json}
+  def enrich_database(cards)
+    needs_enrichment = cards.any? { |c| c.last_enriched_at.nil? || c.last_enriched_at < 24.hours.ago }
+    if needs_enrichment
+      DbEnrichmentJob.perform_later(@product, "#{@product.name} #{@product.brand}")
+    end
+    cards.each do |card|
+      if card.last_enriched_at.nil?
+        DbEnrichmentJob.perform_later(@product, "#{@product.name} #{@product.brand} #{card.title}", order: 'relevance')
+      elsif card.last_enriched_at < 24.hours.ago
+        DbEnrichmentJob.perform_later(@product, "#{@product.name} #{@product.brand} #{card.title}", order: 'time')
+      end
+    end
+  end
 
-      YouTube comments to analyze:
-      #{posts.to_json}
+  def user_message(cards)
+    cards_context = cards.map do |card|
+      posts = PostsDatabaseService.new(@product, card.title).call
+      posts_text = posts.map { |p| p.content }.join("\n---\n")
+      "Card: #{card.title}\nCurrent content: #{card.content}\nRelevant comments:\n#{posts_text}"
+    end.join("\n\n===\n\n")
+
+    <<~MSG
+      #{cards_context}
     MSG
   end
 
