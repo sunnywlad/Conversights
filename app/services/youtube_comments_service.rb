@@ -1,10 +1,9 @@
 class YoutubeCommentsService
-  def initialize(product, query: nil)
+  def initialize(product, query: nil, target: 3)
     @product = product
     @query = query
+    @target = target
   end
-
-  TARGET = 7
 
   def call
     return [] unless @product.name.present? && @product.brand.present?
@@ -14,7 +13,7 @@ class YoutubeCommentsService
     page_token = nil
 
     5.times do
-      break if new_count >= TARGET
+      break if new_count >= @target
       comments, page_token = scraper.call(3, page_token: page_token)
       new_count += store_comments(comments)
       break if page_token.nil?

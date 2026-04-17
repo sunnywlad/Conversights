@@ -1,8 +1,8 @@
 class DbEnrichmentJob < ApplicationJob
   queue_as :default
 
-  def perform(product, query, chat: nil)
-    YoutubeCommentsService.new(product, query: query).call
+  def perform(product, query, chat: nil, target: 3)
+    YoutubeCommentsService.new(product, query: query, target: target).call
     if chat
       now = Time.current
       chat.update(last_enriched_at: now)

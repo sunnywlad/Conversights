@@ -33,15 +33,14 @@ class DashboardRefreshService
   private
 
   def enrich_database(cards)
-    needs_enrichment = cards.any? { |c| c.last_enriched_at.nil? || c.last_enriched_at < 24.hours.ago }
-    if needs_enrichment
-      DbEnrichmentJob.perform_later(@product, "#{@product.name} #{@product.brand}")
-    end
-    cards.each do |card|
-      if card.last_enriched_at.nil?
-        DbEnrichmentJob.perform_later(@product, "#{@product.name} #{@product.brand} #{card.title}")
-      elsif card.last_enriched_at < 24.hours.ago
-        DbEnrichmentJob.perform_later(@product, "#{@product.name} #{@product.brand} #{card.title}")
+    first_time = cards.all? { |c| c.last_enriched_at.nil? }
+    if first_time
+      DbEnrichmentJob.perform_later(@product, "#{@product.name} #{@product.brand}", target: 25)
+    else
+      cards.each do |card|
+        if card.last_enriched_at < 24.hours.ago
+          DbEnrichmentJob.perform_later(@product, "#{@product.name} #{@product.brand} #{card.title}")
+        end
       end
     end
   end
