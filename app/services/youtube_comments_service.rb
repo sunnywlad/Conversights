@@ -4,11 +4,21 @@ class YoutubeCommentsService
     @query = query
   end
 
+  TARGET = 7
+
   def call
     return [] unless @product.name.present? && @product.brand.present?
     scraper = YoutubeScraperService.new(name: @product.name, brand: @product.brand, query: @query)
-    comments, = scraper.call(3)
-    store_comments(comments)
+
+    new_count = 0
+    page_token = nil
+
+    5.times do
+      break if new_count >= TARGET
+      comments, page_token = scraper.call(3, page_token: page_token)
+      new_count += store_comments(comments)
+      break if page_token.nil?
+    end
 
   rescue StandardError => e
     Rails.logger.error "YoutubeCommentsFetcher error: #{e.message}"
