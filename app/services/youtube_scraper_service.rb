@@ -28,7 +28,7 @@ class YoutubeScraperService
       max_results: limit
     )
     response.items.filter_map do |item|
-      if item.snippet.title.include?(@name) || item.snippet.description.to_s.include?(@name)
+      if item.snippet.title.downcase.include?(@name.downcase) || item.snippet.description.to_s.downcase.include?(@name.downcase)
         item.id.video_id
       end
     end

@@ -10,7 +10,11 @@
   </head>
 
   <body class="app-body">
+    <% if user_signed_in? %>
+      <%= turbo_stream_from current_user %>
+    <% end %>
     <%= render "shared/flashes" %>
+    <div id="user_notices"></div>
     <div class="app-layout">
       <%= render "shared/sidebar" %>
       <main class="app-main">
