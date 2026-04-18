@@ -5,40 +5,46 @@ class YoutubeCommentsService
     @target = target
   end
 
-  def call
+  def fetch_raw
     return [] unless @product.name.present? && @product.brand.present?
     scraper = YoutubeScraperService.new(name: @product.name, brand: @product.brand, query: @query)
 
-    new_count = 0
+    raw_comments = []
     page_token = nil
 
     5.times do
-      break if new_count >= @target
+      break if raw_comments.count >= @target
       comments, page_token = scraper.call(3, page_token: page_token)
-      new_count += store_comments(comments)
+      raw_comments += comments
       break if page_token.nil?
     end
 
+    raw_comments
   rescue StandardError => e
-    Rails.logger.error "YoutubeCommentsFetcher error: #{e.message}"
-    { error: "Failed to fetch Youtube comments: #{e.message}" }
+    Rails.logger.error "YoutubeCommentsService fetch error: #{e.message}"
+    []
   end
 
-  private
-
-  def store_comments(comments)
-    posts_to_be_embedded = []
-    comments.each do |comment_data|
+  def save(raw_comments)
+    new_posts = []
+    raw_comments.each do |comment_data|
       post = Post.find_or_create_by!(
         content: comment_data,
         source: "youtube",
         product_id: @product.id
       )
-      posts_to_be_embedded << post if post.previously_new_record?
+      new_posts << post if post.previously_new_record?
     end
-    posts_to_be_embedded.each_with_index do |post, index|
-      SetEmbeddingJob.set(wait: 3 * index.seconds).perform_later(post)
-    end
-    posts_to_be_embedded.count
+    new_posts
+  rescue StandardError => e
+    Rails.logger.error "YoutubeCommentsService save error: #{e.message}"
+    []
+  end
+
+  def call
+    save(fetch_raw)
+  rescue StandardError => e
+    Rails.logger.error "YoutubeCommentsService error: #{e.message}"
+    []
   end
 end

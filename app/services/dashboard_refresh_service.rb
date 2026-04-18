@@ -14,13 +14,18 @@ class DashboardRefreshService
 
   def call
     cards = DashboardCard.where(product: @product)
-    enrich_database(cards)
+    raw_comments = fetch_raw_comments(cards)
 
-    chat = RubyLLM.chat(model: "gpt-4o-mini")
-    chat.with_instructions(DashboardPrompt.content)
-    response = chat.ask(user_message(cards))
+    llm_chat = RubyLLM.chat(model: "gpt-4o-mini")
+    llm_chat.with_instructions(DashboardPrompt.content)
+    response = llm_chat.ask(user_message(cards, raw_comments))
 
     update_cards(cards, JSON.parse(response.content))
+
+    new_posts = YoutubeCommentsService.new(@product).save(raw_comments)
+    new_posts.each_with_index do |post, index|
+      SetEmbeddingJob.set(wait: 1.minute + (index * 3).seconds).perform_later(post)
+    end
 
   rescue JSON::ParserError => e
     Rails.logger.error "DashboardRefreshService JSON parse error: #{e.message}"
@@ -32,36 +37,47 @@ class DashboardRefreshService
 
   private
 
-  def enrich_database(cards)
+  def fetch_raw_comments(cards)
     first_time = cards.all? { |c| c.last_enriched_at.nil? }
     if first_time
-      DbEnrichmentJob.perform_later(@product, "#{@product.name} #{@product.brand}", target: 25)
+      YoutubeCommentsService.new(@product, query: "#{@product.name} #{@product.brand}", target: 25).fetch_raw
     else
-      cards.each do |card|
-        if card.last_enriched_at < 24.hours.ago
-          DbEnrichmentJob.perform_later(@product, "#{@product.name} #{@product.brand} #{card.title}")
-        end
-      end
+      stale_cards = cards.select { |c| c.last_enriched_at < 24.hours.ago }
+      stale_cards.flat_map do |card|
+        YoutubeCommentsService.new(@product, query: "#{@product.name} #{@product.brand} #{card.title}").fetch_raw
+      end.uniq
     end
   end
 
-  def user_message(cards)
-    first_time = cards.all? { |c| c.last_enriched_at.nil? }
+  def user_message(cards, raw_comments)
+    raw_text = raw_comments.join("\n---\n")
+    vectors = rag_vectors_for(cards)
 
-    cards_context = cards.map do |card|
-      if first_time
-        posts = Post.where(product_id: @product.id).order(created_at: :desc).limit(10)
-        posts_text = posts.map(&:content).join("\n---\n")
-      else
-        posts = PostsDatabaseService.new(@product, card.title).call
-        posts_text = posts.map(&:content).join("\n---\n")
+    cards_context = cards.each_with_index.map do |card, i|
+      rag_text = if vectors
+        rag_posts = Post.where(product_id: @product.id)
+                        .where.not(embedding: nil)
+                        .nearest_neighbors(:embedding, vectors[i], distance: "euclidean")
+                        .first(10)
+        rag_posts.map(&:content).join("\n---\n")
       end
-      "Card: #{card.title}\nCurrent content: #{card.content}\nRelevant comments:\n#{posts_text}"
+
+      card_str = "Card: #{card.title}\nCurrent content: #{card.content}"
+      card_str += "\nRelated stored comments:\n#{rag_text}" if rag_text.present?
+      card_str
     end.join("\n\n===\n\n")
 
-    <<~MSG
-      #{cards_context}
-    MSG
+    sections = []
+    sections << "New comments:\n#{raw_text}" if raw_text.present?
+    sections << cards_context
+    sections.join("\n\n===\n\n")
+  end
+
+  def rag_vectors_for(cards)
+    return nil unless Post.where(product_id: @product.id).where.not(embedding: nil).exists?
+
+    result = RubyLLM.embed(cards.map(&:title))
+    result.vectors
   end
 
   def update_cards(cards, llm_response)
@@ -74,7 +90,7 @@ class DashboardRefreshService
       raw_content = data["content"]
       content = raw_content.is_a?(String) ? raw_content : raw_content.to_json
 
-      card.update!(title: new_title, content: content)
+      card.update!(title: new_title, content: content, last_enriched_at: Time.current)
       Turbo::StreamsChannel.broadcast_replace_to(
         @product,
         target: ActionView::RecordIdentifier.dom_id(card),
