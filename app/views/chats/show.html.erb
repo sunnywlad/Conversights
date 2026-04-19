@@ -8,7 +8,7 @@
       <i class="fa-solid fa-chevron-right dashboard-breadcrumb-separator"></i>
       <%= link_to @chat.product.name, product_path(@chat.product), class: "dashboard-breadcrumb-link" %>
       <i class="fa-solid fa-chevron-right dashboard-breadcrumb-separator"></i>
-      <span><%= @chat.title %></span>
+      <span id="chat_title"><%= @chat.title %></span>
     </div>
     <div class="dashboard-topbar-actions">
       <%= link_to product_path(@chat.product), class: "dashboard-new-btn" do %>
@@ -41,14 +41,16 @@
       </div>
     </div>
 
-    <div class="chat-messages" id="chat-messages">
+    <div class="chat-messages" id="chat-messages" data-controller="chat-scroll">
+    <%= turbo_stream_from @chat %>
       <% if @chat.messages.empty? %>
         <div class="chat-empty">
           <div class="chat-empty-icon">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
           </div>
           <h2>Ask anything about <%= @chat.product.name %></h2>
-          <p>Get insights from real YouTube conversations in seconds. <span class="chat-empty-note">More sources coming soon.</span></p>
+          <p>Get insights from real YouTube conversations in seconds.</p>
+          <% unless @chat.dashboard_card.present? %>
           <div class="chat-suggestions">
             <button type="button" class="chat-suggestion"
                     data-action="click->chat-suggestions#fill"
@@ -75,58 +77,16 @@
               <span>Vs competitors</span>
             </button>
           </div>
+          <% end %>
         </div>
       <% else %>
-        <% @chat.messages.each do |message| %>
-          <div class="chat-message chat-message--<%= message.role %>">
-            <div class="chat-message-avatar">
-              <% if message.role == "user" %>
-                <i class="fa-solid fa-user"></i>
-              <% else %>
-                <i class="fa-solid fa-wand-magic-sparkles"></i>
-              <% end %>
-            </div>
-            <div class="chat-message-content">
-              <div class="chat-message-meta">
-                <span class="chat-message-author">
-                  <%= message.role == "user" ? "You" : "Conversights" %>
-                </span>
-                <span class="chat-message-time">
-                  <%= message.created_at.strftime("%H:%M") %>
-                </span>
-              </div>
-              <div class="chat-message-bubble">
-                <%= raw(render_markdown(message.content)) %>
-              </div>
-            </div>
-          </div>
-        <% end %>
+        <%= render "messages/messages", messages: @chat.messages %>
       <% end %>
     </div>
 
-    <div class="chat-composer">
-      <%= simple_form_for [@chat, @message], html: { class: "chat-composer-form" } do |f| %>
-        <div class="chat-composer-inner">
-          <%= f.input :content,
-                      as: :text,
-                      label: false,
-                      input_html: {
-                        class: "chat-composer-input",
-                        placeholder: "Ask anything about #{@chat.product.name}...",
-                        rows: 1,
-                        data: { "chat-suggestions-target": "input" }
-                      } %>
-          <div class="chat-composer-footer">
-            <div class="chat-composer-hint">
-              <i class="fa-solid fa-wand-magic-sparkles"></i>
-              <span>Powered by social media signals</span>
-            </div>
-            <button type="submit" class="chat-composer-submit">
-              <i class="fa-solid fa-arrow-up"></i>
-            </button>
-          </div>
-        </div>
-      <% end %>
+    <div class="chat-composer" id="new_message_area">
+      <%= render "messages/form", chat: @chat, message: @message %>
     </div>
+
   </div>
 </div>

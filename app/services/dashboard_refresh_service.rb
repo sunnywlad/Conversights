@@ -53,6 +53,12 @@ class DashboardRefreshService
       content = raw_content.is_a?(String) ? raw_content : raw_content.to_json
 
       card.update!(title: new_title, content: content)
+      Turbo::StreamsChannel.broadcast_replace_to(
+        @product,
+        target: ActionView::RecordIdentifier.dom_id(card),
+        partial: "dashboard_cards/dashboard_card",
+        locals: { dashboard_card: card }
+      )
     end
   end
 end
