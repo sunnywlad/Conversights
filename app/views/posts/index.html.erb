@@ -1,30 +1,312 @@
-<div class="container py-5" style="max-width: 780px;">
+<style>
+  .posts-index {
+    padding: 2rem 2.5rem 2rem 3.5rem;
+  }
 
-  <div class="d-flex justify-content-between align-items-center border-bottom pb-3 mb-4">
-    <div>
-      <p class="text-muted text-uppercase small mb-1"><%= @product.brand %></p>
-      <h1 class="h3 fw-semibold mb-0"><%= @product.name %></h1>
-    </div>
-    <%= link_to "← Back to Dashboard", product_path(@product), class: "btn btn-outline-dark btn-sm" %>
-  </div>
+  /* Header */
+  .posts-index__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 1.5rem;
+    padding-bottom: 1.25rem;
+    border-bottom: 1px solid #e8e8e8;
+    margin-bottom: 1.5rem;
+  }
 
-  <p class="text-muted small text-uppercase mb-3"><%= @posts.count %> comment<%= @posts.count > 1 ? "s" : "" %></p>
+  .posts-index__brand {
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #9a9a9a;
+    margin-bottom: 0.25rem;
+  }
+
+  .posts-index__title {
+    font-size: 1.35rem;
+    font-weight: 600;
+    color: #1a1a1a;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .posts-index__back {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6b6b6b;
+    text-decoration: none;
+    padding: 0.4rem 0.85rem;
+    border: 1px solid #e8e8e8;
+    border-radius: 6px;
+    transition: all 0.15s;
+    white-space: nowrap;
+    margin-top: 0.2rem;
+  }
+
+  .posts-index__back:hover {
+    color: #1a1a1a;
+    border-color: #9a9a9a;
+    background: #f5f5f5;
+  }
+
+  /* Meta bar */
+  .posts-index__meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .posts-index__count {
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: #6b6b6b;
+    letter-spacing: 0.04em;
+  }
+
+  .posts-index__count strong {
+    color: #1a1a1a;
+    font-weight: 600;
+  }
+
+  /* Source filters */
+  .posts-filters {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-left: auto;
+  }
+
+  .posts-filters__pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    border: 1px solid #e8e8e8;
+    background: transparent;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #6b6b6b;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: inherit;
+  }
+
+  .posts-filters__pill:hover,
+  .posts-filters__pill.active {
+    background: #1a1a1a;
+    border-color: #1a1a1a;
+    color: #ffffff;
+  }
+
+  /* Grid */
+  .posts-grid {
+    columns: 3;
+    column-gap: 1rem;
+  }
+
+  @media (max-width: 1100px) { .posts-grid { columns: 2; } }
+  @media (max-width: 640px)  { .posts-grid { columns: 1; } }
+
+  /* Card */
+  .post-card {
+    break-inside: avoid;
+    background: #ffffff;
+    border: 1px solid #e8e8e8;
+    border-radius: 8px;
+    padding: 1rem 1.1rem 0.875rem;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    transition: box-shadow 0.2s, border-color 0.2s;
+    opacity: 0;
+    animation: postCardIn 0.35s ease forwards;
+  }
+
+  .post-card:hover {
+    border-color: #d0d0d0;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+  }
+
+  .post-card__index {
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: #9a9a9a;
+    letter-spacing: 0.06em;
+  }
+
+  .post-card__content {
+    font-size: 0.825rem;
+    line-height: 1.6;
+    color: #2d2d2d;
+    flex: 1;
+    word-break: break-word;
+    margin: 0;
+  }
+
+  .post-card__footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  /* Source tag */
+  .source-tag {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.65rem;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    border: 1px solid;
+  }
+
+  .source-tag--reddit  { color: #FF4500; border-color: rgba(255,69,0,0.25); background: rgba(255,69,0,0.05); }
+  .source-tag--twitter { color: #6b6b6b; border-color: #e8e8e8; background: #f5f5f5; }
+  .source-tag--youtube { color: #FF0000; border-color: rgba(255,0,0,0.25); background: rgba(255,0,0,0.05); }
+  .source-tag--forum   { color: #6366f1; border-color: rgba(99,102,241,0.25); background: rgba(99,102,241,0.05); }
+  .source-tag--default { color: #6b6b6b; border-color: #e8e8e8; background: #f5f5f5; }
+
+  .post-card__date {
+    font-size: 0.65rem;
+    color: #9a9a9a;
+  }
+
+  /* Empty state */
+  .posts-empty {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: #9a9a9a;
+  }
+
+  .posts-empty__icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+    opacity: 0.4;
+  }
+
+  .posts-empty__title {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #6b6b6b;
+    margin-bottom: 0.4rem;
+  }
+
+  .posts-empty__sub {
+    font-size: 0.775rem;
+    color: #9a9a9a;
+  }
+
+  /* Animation */
+  @keyframes postCardIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
 
   <% if @posts.any? %>
-    <% @posts.each_with_index do |post, index| %>
-      <div class="border-top py-3 d-flex gap-3">
-        <span class="text-muted small pt-1"><%= (index + 1).to_s.rjust(2, "0") %></span>
-        <div>
-          <p class="mb-1"><%= post.content %></p>
-          <span class="badge bg-light text-muted border small"><%= post.source %></span>
-        </div>
+    <% @posts.each_with_index do |_, i| %>
+      .post-card:nth-child(<%= i + 1 %>) { animation-delay: <%= [i * 0.03, 0.3].min %>s; }
+    <% end %>
+  <% end %>
+</style>
+
+<div class="posts-index">
+
+  <%# Header %>
+  <div class="posts-index__header">
+    <div>
+      <p class="posts-index__brand"><%= @product.brand %></p>
+      <h1 class="posts-index__title"><%= @product.name %></h1>
+    </div>
+    <%= link_to product_path(@product), class: "posts-index__back" do %>
+      ← Back to dashboard
+    <% end %>
+  </div>
+
+  <%# Meta + filters %>
+  <div class="posts-index__meta">
+    <span class="posts-index__count">
+      <strong><%= @posts.count %></strong> comment<%= @posts.count != 1 ? "s" : "" %> collected
+    </span>
+
+    <% sources = @posts.map(&:source).compact.uniq.sort %>
+    <% if sources.any? %>
+      <div class="posts-filters" id="postsFilters">
+        <button class="posts-filters__pill active" data-source="all">All</button>
+        <% sources.each do |src| %>
+          <button class="posts-filters__pill" data-source="<%= src.downcase %>"><%= src %></button>
+        <% end %>
       </div>
     <% end %>
-    <div class="border-top"></div>
+  </div>
+
+  <%# Grid %>
+  <% if @posts.any? %>
+    <div class="posts-grid" id="postsGrid">
+      <% @posts.each_with_index do |post, index| %>
+        <%
+          src_key = case post.source&.downcase
+                    when /reddit/           then "reddit"
+                    when /twitter/, /\bx\b/ then "twitter"
+                    when /youtube/          then "youtube"
+                    when /forum/            then "forum"
+                    else                         "default"
+                    end
+        %>
+        <article class="post-card" data-source="<%= post.source&.downcase %>">
+          <span class="post-card__index"><%= (index + 1).to_s.rjust(3, "0") %></span>
+          <p class="post-card__content"><%= post.content %></p>
+          <footer class="post-card__footer">
+            <% if post.source.present? %>
+              <span class="source-tag source-tag--<%= src_key %>"><%= post.source %></span>
+            <% end %>
+            <% if post.respond_to?(:created_at) && post.created_at.present? %>
+              <time class="post-card__date" datetime="<%= post.created_at.iso8601 %>">
+                <%= post.created_at.strftime("%-d %b %Y") %>
+              </time>
+            <% end %>
+          </footer>
+        </article>
+      <% end %>
+    </div>
   <% else %>
-    <div class="border-top py-5 text-center text-muted fst-italic">
-      No comments collected yet.
+    <div class="posts-empty">
+      <div class="posts-empty__icon">◎</div>
+      <p class="posts-empty__title">No comments collected yet</p>
+      <p class="posts-empty__sub">Run an analysis on <%= @product.name %> to start gathering insights.</p>
     </div>
   <% end %>
 
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const pills = document.querySelectorAll(".posts-filters__pill");
+    const cards = document.querySelectorAll(".post-card");
+
+    pills.forEach(pill => {
+      pill.addEventListener("click", () => {
+        const source = pill.dataset.source;
+        pills.forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        cards.forEach(card => {
+          if (source === "all") {
+            card.style.display = "";
+          } else {
+            card.style.display = card.dataset.source?.includes(source) ? "" : "none";
+          }
+        });
+      });
+    });
+  });
+</script>
