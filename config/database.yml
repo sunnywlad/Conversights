@@ -79,6 +79,4 @@ test:
 #
 production:
   <<: *default
-  database: conversights_production
-  username: conversights
-  password: <%= ENV["CONVERSIGHTS_DATABASE_PASSWORD"] %>
+  url: <%= ENV["DATABASE_URL"] %>
