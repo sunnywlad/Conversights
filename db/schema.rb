@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_16_195608) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_17_132707) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "vector"
 
   create_table "chats", force: :cascade do |t|
     t.string "title"
@@ -20,6 +21,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_16_195608) do
     t.bigint "dashboard_card_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "last_enriched_at"
     t.index ["dashboard_card_id"], name: "index_chats_on_dashboard_card_id"
     t.index ["product_id"], name: "index_chats_on_product_id"
   end
@@ -30,6 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_16_195608) do
     t.bigint "product_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "last_enriched_at"
     t.index ["product_id"], name: "index_dashboard_cards_on_product_id"
   end
 
@@ -52,6 +55,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_16_195608) do
     t.integer "value"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.vector "embedding", limit: 1536
     t.index ["product_id"], name: "index_posts_on_product_id"
   end
 

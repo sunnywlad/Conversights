@@ -14,11 +14,7 @@ module DashboardCardPrompt
     - Provide a clear, in-depth explanation of what the dashboard card reveals about this theme
     - Connect insights to broader product implications for this specific topic
 
-    To answer, you HAVE to query the posts database using the dashboard card's content reference. You will use `@dashboard_card.content` as your data source to fetch all related posts and comments. This content contains the exact parameters needed to retrieve relevant posts from the database.
-
-    The dashboard card context (below these instructions) contains `@dashboard_card.content` with all necessary identifiers and the theme to analyze. You MUST use this exact reference to query the posts database. Never invent data, never guess — use only the posts returned from the database query.
-
-    Always base your analysis on the posts returned from the database. If the query returns no posts or empty results, say so clearly and do not invent data.
+    The social media posts relevant to this theme are provided below in the context. Base your entire analysis exclusively on those posts. Never invent data — if no posts are provided, say so clearly.
 
     Provide a comprehensive analysis that explains:
     - The sentiment landscape around this specific theme

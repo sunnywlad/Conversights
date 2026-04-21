@@ -1,31 +1,31 @@
 require 'google/apis/youtube_v3'
 
 class YoutubeScraperService
-  def initialize(name:, brand:)
+  def initialize(name:, brand:, query: nil)
     @youtube_service = Google::Apis::YoutubeV3::YouTubeService.new
     @youtube_service.key = ENV['YOUTUBE_API_KEY']
-    @query = "#{name} #{brand}"
+    @query = query ? "#{query} #{name} #{brand}" : "#{name} #{brand}"
   end
 
-  def call (max_videos = 3)
-    video_ids = fetch_video_ids(max_videos)
+  def call(max_videos = 3, page_token: nil)
+    video_ids, next_page_token = fetch_video_ids(max_videos, page_token)
 
-    all_feedbacks = video_ids.map do |video_id|
-      fetch_comments(video_id)
-    end.compact
-    all_feedbacks
+    comments = video_ids.flat_map { |video_id| fetch_comments(video_id) }.compact
+    [comments, next_page_token]
   end
 
   private
 
-  def fetch_video_ids(limit)
+  def fetch_video_ids(limit, page_token = nil)
     response = @youtube_service.list_searches(
       'id',
       q: @query,
       type: 'video',
-      max_results: limit
+      max_results: limit,
+      page_token: page_token
     )
-    response.items.map { |item| item.id.video_id }
+    video_ids = response.items.map { |item| item.id.video_id }
+    [video_ids, response.next_page_token]
   end
 
   def fetch_comments(video_id)
