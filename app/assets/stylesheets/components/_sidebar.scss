@@ -359,7 +359,3 @@
   justify-content: flex-start;
 }
 
-// Titre dynamique de la page (ex: "Posts") - décalage à droite quand sidebar ouverte
-body:has(.sidebar:hover) .app-main {
-  margin-left: 260px;
-}
