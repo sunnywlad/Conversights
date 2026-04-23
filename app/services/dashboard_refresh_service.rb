@@ -29,11 +29,6 @@ class DashboardRefreshService
       SetEmbeddingJob.set(wait: 1.minute + (index * 3).seconds).perform_later(post)
     end
 
-    new_posts = YoutubeCommentsService.new(@product).save(raw_comments)
-    new_posts.each_with_index do |post, index|
-      SetEmbeddingJob.set(wait: 1.minute + (index * 3).seconds).perform_later(post)
-    end
-
   rescue JSON::ParserError => e
     Rails.logger.error "DashboardRefreshService JSON parse error: #{e.message}"
     { error: "LLM returned invalid JSON" }
