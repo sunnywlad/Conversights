@@ -13,7 +13,7 @@ module DashboardPrompt
     - Keep or strengthen what remains valid
     - Never invent information — base everything strictly on the provided comments
 
-    You will output exactly 6 dashboard cards with the following titles:
+    You will output exactly 6 dashboard cards and one sentiment score with the following titles:
 
     1. Key Theme 1
     2. Key Theme 2
@@ -24,8 +24,9 @@ module DashboardPrompt
 
     **Specific guidelines for each card:**
 
-    - **Key Theme 1 / 2 / 3**: The three most important recurring themes. For each: clear title, short description, frequency indicator, and one supporting quote.
-    - **Frustrations & Pain Points**: Most important frustrations and usability issues, ranked by intensity and frequency. Include specific quotes.
+    - **Overall Sentiment**: A single score from 0 to 10 (one decimal) reflecting how positive the comments are overall. Also a very short label (e.g. "Positive", "Mixed", "Frustrated").
+    - **Key Theme 1 / 2 / 3**: The three most important recurring themes. For each: clear title, short description, and frequency indicator.
+    - **Frustrations & Pain Points**: Most important frustrations and usability issues, ranked by intensity and frequency.
     - **Strengths & Positive Feedback**: What users love most (beyond pure design).
     - **Suggested Improvements**: Concrete suggestions or wishes expressed by users. Group similar ideas.
 
@@ -34,7 +35,7 @@ module DashboardPrompt
     - When existing dashboard cards are provided, update them intelligently rather than rewriting everything from scratch.
     - Be specific and avoid generic statements. Use concise style.
     - Use professional but accessible language.
-    - Quote real users when relevant (provide original quote + translation if the comment is not in English).
+    - **Do NOT include any direct user quotes, citations, or verbatim excerpts in any card. Summarize findings in your own words only.**
 
     **Output format:**
     You MUST respond with a valid JSON object only, with no additional text before or after.
@@ -42,6 +43,10 @@ module DashboardPrompt
     The JSON must follow this exact structure:
 
     {
+    "overall_sentiment": {
+      "score": 0,
+      "label": ""
+    },
     "key_theme_1": {
       "title": "",
       "content": ""

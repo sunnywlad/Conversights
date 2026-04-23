@@ -81,6 +81,24 @@
   }
 }
 
+.dashboard-new-btn.dashboard-primary-btn {
+  border-color: $black;
+  background: $black;
+  color: $white;
+
+  i {
+    color: $white;
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: $black;
+    background: $dark;
+    color: $white;
+  }
+}
+
 // Main content
 .dashboard-content {
   max-width: 780px;
@@ -147,6 +165,8 @@
   align-items: center;
   justify-content: space-between;
   padding: 0.625rem 1.25rem;
+  background: $black;
+  color: $white;
 }
 
 .dashboard-ask-btn {
@@ -156,12 +176,16 @@
   padding: 0.375rem 0.875rem;
   border: none;
   background: none;
-  color: $medium-gray;
+  color: $white;
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
   border-radius: 0.375rem;
   transition: all 0.15s;
+
+  i {
+    color: $white;
+  }
 
   i:first-child {
     font-size: 0.8125rem;
@@ -173,8 +197,8 @@
   }
 
   &:hover {
-    background: $lighter-gray;
-    color: $black;
+    background: $dark-gray;
+    color: $white;
   }
 }
 
@@ -205,13 +229,17 @@
 }
 
 .dashboard-send-btn {
-  background: $black;
-  color: $white;
+  background: $white;
+  color: $black;
   border-radius: 50%;
 
+  i {
+    color: $black;
+  }
+
   &:hover {
-    background: $dark-gray;
-    color: $white;
+    background: $lighter-gray;
+    color: $black;
   }
 }
 

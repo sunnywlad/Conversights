@@ -232,11 +232,11 @@
 }
 
 .knowledge-callout--tip {
-  background: #f8f9ff;
-  border-color: #e6e9f9;
+  background: $lighter-gray;
+  border-color: $light-gray;
 
   i {
-    color: #6366f1;
+    color: $black;
   }
 }
 

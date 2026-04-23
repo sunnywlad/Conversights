@@ -20,7 +20,9 @@ class DashboardRefreshService
     llm_chat.with_instructions(DashboardPrompt.content)
     response = llm_chat.ask(user_message(cards, raw_comments))
 
-    update_cards(cards, JSON.parse(response.content))
+    llm_response = JSON.parse(response.content)
+    update_cards(cards, llm_response)
+    update_sentiment(llm_response)
 
     new_posts = YoutubeCommentsService.new(@product).save(raw_comments)
     new_posts.each_with_index do |post, index|
@@ -78,6 +80,19 @@ class DashboardRefreshService
 
     result = RubyLLM.embed(cards.map(&:title))
     result.vectors
+  end
+
+  def update_sentiment(llm_response)
+    data = llm_response["overall_sentiment"]
+    return unless data && data["score"].present?
+
+    @product.update!(sentiment_score: data["score"], sentiment_label: data["label"])
+    Turbo::StreamsChannel.broadcast_replace_to(
+      @product,
+      target: "sentiment-badge",
+      partial: "products/sentiment_badge",
+      locals: { product: @product }
+    )
   end
 
   def update_cards(cards, llm_response)
