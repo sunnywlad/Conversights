@@ -10,9 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2026_04_16_195608) do
+ActiveRecord::Schema[7.1].define(version: 2026_04_23_113414) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "vector"
 
   create_table "chats", force: :cascade do |t|
     t.string "title"
@@ -20,6 +21,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_16_195608) do
     t.bigint "dashboard_card_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "last_enriched_at"
     t.index ["dashboard_card_id"], name: "index_chats_on_dashboard_card_id"
     t.index ["product_id"], name: "index_chats_on_product_id"
   end
@@ -30,6 +32,7 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_16_195608) do
     t.bigint "product_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.datetime "last_enriched_at"
     t.index ["product_id"], name: "index_dashboard_cards_on_product_id"
   end
 
@@ -42,18 +45,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_16_195608) do
     t.index ["chat_id"], name: "index_messages_on_chat_id"
   end
 
-  create_table "posts", force: :cascade do |t|
-    t.string "source"
-    t.string "content"
-    t.date "date"
-    t.bigint "product_id", null: false
-    t.string "keywords"
-    t.integer "appreciation"
-    t.integer "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_posts_on_product_id"
-  end
+# Could not dump table "posts" because of following StandardError
+#   Unknown type 'vector(1536)' for column 'embedding'
 
   create_table "products", force: :cascade do |t|
     t.string "name"
@@ -61,6 +54,8 @@ ActiveRecord::Schema[7.1].define(version: 2026_04_16_195608) do
     t.bigint "user_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.decimal "sentiment_score"
+    t.string "sentiment_label"
     t.index ["user_id"], name: "index_products_on_user_id"
   end
 

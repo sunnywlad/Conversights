@@ -37,6 +37,7 @@
           <h1><%= @product.name %></h1>
           <p class="product-show-brand"><%= @product.brand %></p>
         </div>
+        <%= render "products/sentiment_badge", product: @product %>
       </div>
     </header>
 

@@ -57,6 +57,8 @@ gem "rouge"
 gem "kramdown-parser-gfm"
 gem "solid_queue"
 gem "solid_cable"
+gem "neighbor"
+gem "pgvector"
 
 group :development, :test do
   gem "dotenv-rails"
