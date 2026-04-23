@@ -44,7 +44,7 @@
     <div class="chat-messages" id="chat-messages" data-controller="chat-scroll">
     <%= turbo_stream_from @chat %>
       <% if @chat.messages.empty? %>
-        <div class="chat-empty">
+        <div class="chat-empty" data-controller="chat-empty">
           <div class="chat-empty-icon">
             <i class="fa-solid fa-wand-magic-sparkles"></i>
           </div>

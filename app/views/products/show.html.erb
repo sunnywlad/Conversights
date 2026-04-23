@@ -111,12 +111,11 @@
                         form: { style: "display: inline-block;" } %>
         </div>
       <% end %>
-      <div class="product-show-posts-link">
-        <%= link_to product_posts_path(@product), class: "dashboard-new-btn" do %>
-          <i class="fa-solid fa-comments"></i>
-          <span>See the comments</span>
-        <% end %>
-      </div>
+      <%= link_to product_posts_path(@product), class: "dashboard-new-btn chat-comments-btn" do %>
+  <i class="fa-solid fa-comments"></i>
+  <span>See the comments</span>
+<% end %>
+
     </section>
   </div>
 </div>

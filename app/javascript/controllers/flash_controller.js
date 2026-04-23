@@ -5,6 +5,6 @@ export default class extends Controller {
     setTimeout(() => {
       this.element.classList.remove("show")
       setTimeout(() => this.element.remove(), 300)
-    }, 3000)
+    }, 2000)
   }
 }
