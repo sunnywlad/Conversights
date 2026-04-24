@@ -10,7 +10,7 @@
     <% end %>
   </div>
 
-  <div class="dashboard-content">
+  <div class="dashboard-content dashboard-content--flush">
     <h1 class="dashboard-hero">What are you making sense of today?</h1>
 
     <%= link_to new_product_path, class: "dashboard-input-card dashboard-input-card--link" do %>
@@ -30,48 +30,48 @@
         </div>
       </div>
     <% end %>
-
-    <% if @products.any? %>
-      <div class="products-section">
-        <div class="products-section-header">
-          <h2>Your products</h2>
-          <span class="products-count"><%= @products.size %></span>
-        </div>
-
-        <div class="products-grid">
-          <% @products.each_with_index do |product, i| %>
-            <div class="product-card-wrapper">
-              <%= link_to product_path(product), class: "product-card" do %>
-                <div class="product-card-icon product-card-icon--<%= ['blue', 'green', 'purple', 'orange'][i % 4] %>">
-                  <i class="fa-solid fa-box"></i>
-                </div>
-                <h3 class="product-card-title"><%= product.name %></h3>
-                <p class="product-card-brand"><%= product.brand %></p>
-                <div class="product-card-meta">
-                  <span><i class="fa-solid fa-comment"></i> <%= product.chats.count %></span>
-                  <span><i class="fa-solid fa-chart-simple"></i> <%= product.dashboard_cards.count %></span>
-                </div>
-              <% end %>
-              <%= button_to product_path(product),
-                  method: :delete,
-                  data: { turbo_confirm: "Delete this product?" },
-                  class: "product-card-delete",
-                  form: { data: { turbo_frame: "_top" } } do %>
-                <i class="fa-solid fa-xmark"></i>
-              <% end %>
-            </div>
-          <% end %>
-        </div>
-      </div>
-    <% else %>
-      <div class="products-empty">
-        <div class="products-empty-icon">
-          <i class="fa-solid fa-box-open"></i>
-        </div>
-        <h3>No products yet</h3>
-        <p>Create your first product to start analyzing social media buzz.</p>
-        <%= link_to "Create your first product", new_product_path, class: "products-empty-btn" %>
-      </div>
-    <% end %>
   </div>
+
+  <% if @products.any? %>
+    <div class="products-section">
+      <div class="products-section-header">
+        <h2>Your products</h2>
+        <span class="products-count"><%= @products.size %></span>
+      </div>
+
+      <div class="products-grid">
+        <% @products.each_with_index do |product, i| %>
+          <div class="product-card-wrapper">
+            <%= link_to product_path(product), class: "product-card" do %>
+              <div class="product-card-icon product-card-icon--<%= ['blue', 'green', 'purple', 'orange'][i % 4] %>">
+                <i class="fa-solid fa-box"></i>
+              </div>
+              <h3 class="product-card-title"><%= product.name %></h3>
+              <p class="product-card-brand"><%= product.brand %></p>
+              <div class="product-card-meta">
+                <span><i class="fa-solid fa-comment"></i> <%= product.chats.count %></span>
+                <span><i class="fa-solid fa-chart-simple"></i> <%= product.dashboard_cards.count %></span>
+              </div>
+            <% end %>
+            <%= button_to product_path(product),
+                method: :delete,
+                data: { turbo_confirm: "Delete this product?" },
+                class: "product-card-delete",
+                form: { data: { turbo_frame: "_top" } } do %>
+              <i class="fa-solid fa-xmark"></i>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  <% else %>
+    <div class="products-empty">
+      <div class="products-empty-icon">
+        <i class="fa-solid fa-box-open"></i>
+      </div>
+      <h3>No products yet</h3>
+      <p>Create your first product to start analyzing social media buzz.</p>
+      <%= link_to "Create your first product", new_product_path, class: "products-empty-btn" %>
+    </div>
+  <% end %>
 </div>

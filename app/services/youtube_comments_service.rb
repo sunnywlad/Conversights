@@ -19,7 +19,7 @@ class YoutubeCommentsService
       break if page_token.nil?
     end
 
-    raw_comments
+    raw_comments.first(@target)
   rescue StandardError => e
     Rails.logger.error "YoutubeCommentsService fetch error: #{e.message}"
     []

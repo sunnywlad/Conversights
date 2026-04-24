@@ -20,20 +20,36 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 1rem 2rem;
-  border-bottom: 1px solid $light-gray;
+  padding: 0 2rem;
+  height: 72px;
+  border-bottom: 1px solid $black;
 }
 
 .dashboard-breadcrumb {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid $black;
+  border-radius: 0.5rem;
+  background: $black;
+  color: $white;
   font-size: 0.875rem;
-  color: $medium-gray;
   font-weight: 500;
+  transition: all 0.15s;
 
   i {
     font-size: 0.8125rem;
+    color: $white;
+  }
+
+  &:hover,
+  &:focus,
+  &:active {
+    border-color: $black;
+    background: $dark;
+    color: $white;
+    text-decoration: none;
   }
 }
 
@@ -104,6 +120,10 @@
   max-width: 780px;
   margin: 0 auto;
   padding: 4rem 2rem;
+
+  &--flush {
+    padding-bottom: 1rem;
+  }
 }
 
 .dashboard-hero {
