@@ -102,7 +102,7 @@
   font-size: 0.875rem;
   font-weight: 400;
   text-decoration: none;
-  transition: all 0.15s;
+  transition: background 0.15s, color 0.15s, padding-left 0.25s ease, gap 0.25s ease;
   position: relative;
 
   i:first-child {
@@ -319,25 +319,27 @@
 }
 
 // Masquer les textes quand la sidebar est fermée
+.sidebar span:not(.sidebar-logo-icon) {
+  max-width: 200px;
+  opacity: 1;
+  overflow: hidden;
+  white-space: nowrap;
+  transition: max-width 0.25s ease, opacity 0.2s ease 0.1s;
+}
+
 .sidebar:not(:hover) span:not(.sidebar-logo-icon) {
   opacity: 0;
   max-width: 0;
-  overflow: hidden;
-  white-space: nowrap;
+  transition: max-width 0.25s ease, opacity 0.15s ease;
 }
 
 .sidebar:not(:hover) .sidebar-nav-item {
-  justify-content: center;
+  padding-left: 10px;
   gap: 0;
 }
 
 .sidebar:not(:hover) .sidebar-nav-chevron {
   display: none;
-}
-
-.sidebar:hover span {
-  opacity: 1;
-  transition: opacity 0.2s ease 0.1s;
 }
 
 // Centrer le logo en mode fermé

@@ -44,14 +44,16 @@
         <% @products.each_with_index do |product, i| %>
           <div class="product-card-wrapper">
             <%= link_to product_path(product), class: "product-card" do %>
-              <div class="product-card-icon product-card-icon--<%= ['blue', 'green', 'purple', 'orange'][i % 4] %>">
-                <i class="fa-solid fa-box"></i>
+              <div class="product-card-header">
+                <div class="product-card-icon">
+                  <%= product.name.first.upcase %>
+                </div>
+                <h3 class="product-card-title"><%= product.name %></h3>
               </div>
-              <h3 class="product-card-title"><%= product.name %></h3>
               <p class="product-card-brand"><%= product.brand %></p>
               <div class="product-card-meta">
                 <span><i class="fa-solid fa-comment"></i> <%= product.chats.count %></span>
-                <span><i class="fa-solid fa-chart-simple"></i> <%= product.dashboard_cards.count %></span>
+                <span><i class="fa-solid fa-comment-dots"></i> <%= product.posts.count %></span>
               </div>
             <% end %>
             <%= button_to product_path(product),

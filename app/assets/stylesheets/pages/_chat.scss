@@ -57,7 +57,7 @@
   align-items: center;
   gap: 0.5rem;
   font-size: 0.75rem;
-  color: $gray;
+  color: $medium-gray;
   margin: 0;
   font-weight: 500;
   text-transform: uppercase;
@@ -186,6 +186,7 @@
 .chat-message--assistant .chat-message-avatar {
   background: $black;
   color: $white;
+  font-weight: 700;
 }
 
 .chat-message-content {
@@ -202,7 +203,7 @@
 }
 
 .chat-message-author {
-  font-size: 0.8125rem;
+  font-size: 1.25rem;
   font-weight: 600;
   color: $black;
 }

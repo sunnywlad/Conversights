@@ -8,17 +8,19 @@
     <div class="insight-card-icon">
       <i class="fa-solid <%= visual[:icon] %>"></i>
     </div>
-    <span class="insight-card-cta">
-      <i class="fa-solid fa-comment"></i>
-      <span>Ask</span>
-    </span>
+    <h3 class="insight-card-title"><%= dashboard_card.title %></h3>
   </div>
-  <h3 class="insight-card-title"><%= dashboard_card.title %></h3>
   <div class="insight-card-content">
     <% if dashboard_card.content.present? %>
       <%= raw(render_markdown(dashboard_card.content)) %>
     <% else %>
       <p class="insight-card-empty">No data yet. Click Refresh to analyze.</p>
     <% end %>
+  </div>
+  <div class="insight-card-footer">
+    <span class="insight-card-cta <%= 'insight-card-cta--has-chat' if dashboard_card.chats.any? %>">
+      <i class="fa-solid fa-comment"></i>
+      <span class="insight-card-cta-label">Ask</span>
+    </span>
   </div>
 <% end %>

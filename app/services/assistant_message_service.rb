@@ -54,7 +54,6 @@ class AssistantMessageService
   def product_context
     <<~CTX
       Product context:
-      - Product ID: #{@product.id}
       - Name: #{@product.name}
       - Brand: #{@product.brand}
     CTX

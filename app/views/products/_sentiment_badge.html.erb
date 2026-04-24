@@ -1,6 +1,8 @@
 <div id="sentiment-badge">
   <% if product.sentiment_score.present? %>
-    <span class="sentiment-badge-score"><%= product.sentiment_score %>/10</span>
-    <span class="sentiment-badge-label"><%= product.sentiment_label %></span>
+    <div class="sentiment-badge">
+      <span class="sentiment-badge-score"><%= product.sentiment_score %>/10</span>
+      <span class="sentiment-badge-label"><%= product.sentiment_label %></span>
+    </div>
   <% end %>
 </div>

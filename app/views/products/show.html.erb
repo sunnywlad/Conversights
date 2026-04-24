@@ -32,7 +32,7 @@
     <header class="product-show-header">
       <div class="product-show-title">
         <div class="product-show-icon">
-          <i class="fa-solid fa-box"></i>
+          <%= @product.name.first.upcase %>
         </div>
         <div>
           <h1><%= @product.name %></h1>
@@ -65,12 +65,16 @@
         <h2>Chats</h2>
         <span class="products-count"><%= @chats.size %></span>
         <div class="product-show-section-actions">
+          <%= link_to product_posts_path(@product), class: "dashboard-new-btn dashboard-primary-btn" do %>
+            <i class="fa-solid fa-comments"></i>
+            <span>See comments</span>
+          <% end %>
           <%= button_to product_chats_path(@product),
                         method: :post,
-                        class: "dashboard-new-btn",
+                        class: "dashboard-new-btn dashboard-primary-btn",
                         form: { style: "display: inline-block;" } do %>
             <i class="fa-solid fa-plus"></i>
-            <span>New chat</span>
+            <span>Start a chat</span>
           <% end %>
         </div>
       </div>
@@ -112,11 +116,6 @@
                         form: { style: "display: inline-block;" } %>
         </div>
       <% end %>
-      <%= link_to product_posts_path(@product), class: "dashboard-new-btn chat-comments-btn" do %>
-  <i class="fa-solid fa-comments"></i>
-  <span>See the comments</span>
-<% end %>
-
     </section>
   </div>
 </div>

@@ -24,6 +24,21 @@ module DashboardCardPrompt
 
     Answer in the same language as the user's question. Translate quotes into the user's language and always also include the original quote so it stays verifiable. Use clear bullet points and cite specific posts when relevant. Avoid generic statements.
 
+    Format your response using proper markdown. Each section must follow this exact structure:
+
+    ## Section Title
+
+    Paragraph text goes here on a new line, separated from the heading by a blank line.
+
+    - Bullet point one
+    - Bullet point two
+
+    ## Next Section
+
+    Next paragraph here.
+
+    Every heading must be on its own line. Never write a heading and paragraph text on the same line.
+
     PROMPT
   end
 end
