@@ -16,6 +16,11 @@ class DashboardRefreshService
     cards = DashboardCard.where(product: @product)
     raw_comments = fetch_raw_comments(cards)
 
+    new_posts = YoutubeCommentsService.new(@product).save(raw_comments)
+    new_posts.each_with_index do |post, index|
+      SetEmbeddingJob.set(wait: 1.minute + (index * 3).seconds).perform_later(post)
+    end
+
     llm_chat = RubyLLM.chat(model: "gpt-4o-mini")
     llm_chat.with_instructions(DashboardPrompt.content)
     response = llm_chat.ask(user_message(cards, raw_comments))
@@ -23,11 +28,6 @@ class DashboardRefreshService
     llm_response = JSON.parse(response.content)
     update_cards(cards, llm_response)
     update_sentiment(llm_response)
-
-    new_posts = YoutubeCommentsService.new(@product).save(raw_comments)
-    new_posts.each_with_index do |post, index|
-      SetEmbeddingJob.set(wait: 1.minute + (index * 3).seconds).perform_later(post)
-    end
 
   rescue JSON::ParserError => e
     Rails.logger.error "DashboardRefreshService JSON parse error: #{e.message}"
