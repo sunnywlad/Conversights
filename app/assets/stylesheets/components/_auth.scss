@@ -15,8 +15,8 @@
   background: $black;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 4rem;
+  justify-content: flex-start;
+  padding: 20vh 4rem 4rem;
   position: relative;
   overflow: hidden;
 }
@@ -27,23 +27,25 @@
 }
 
 .auth-logo {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  margin-bottom: 3rem;
+  display: inline-flex;
+  align-items: stretch;
+  height: 52px;
+  margin-bottom: 3.5rem;
+  border: 1.5px solid $white;
+  border-radius: 0.75rem;
+  overflow: hidden;
 }
 
 .auth-logo-icon {
-  width: 40px;
-  height: 40px;
   background: $white;
   color: $black;
-  border-radius: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: 700;
   font-size: 1.125rem;
+  aspect-ratio: 1;
+  border-radius: 0 8px 8px 0;
 }
 
 .auth-logo-text {
@@ -51,6 +53,9 @@
   font-weight: 600;
   color: $white;
   letter-spacing: -0.02em;
+  display: flex;
+  align-items: center;
+  padding: 0 0.75rem 0 0.625rem;
 }
 
 .auth-tagline {
@@ -60,14 +65,13 @@
   line-height: 1.15;
   letter-spacing: -0.03em;
   margin-bottom: 1.5rem;
-  max-width: 480px;
 }
 
 .auth-subtitle {
-  font-size: 1.0625rem;
-  color: $gray;
+  font-size: 1.1875rem;
+  font-weight: 300;
+  color: #d4d4d4;
   line-height: 1.6;
-  max-width: 400px;
 }
 
 // Decorative orbs
@@ -105,9 +109,9 @@
 .auth-right {
   flex: 1;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 4rem;
+  padding: 20vh 4rem 4rem;
   background: $white;
 }
 

@@ -23,6 +23,44 @@
   padding: 0 2rem;
   height: 72px;
   border-bottom: 1px solid $black;
+  position: relative;
+}
+
+.topbar-brand {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: stretch;
+  height: 36px;
+  border: 1px solid $black;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.topbar-brand-icon {
+  background: $black;
+  color: $white;
+  font-weight: 600;
+  font-size: 1.0625rem;
+  padding: 0 0.5rem;
+  border-radius: 0 0.35rem 0.35rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.topbar-brand-text {
+  color: $black;
+  font-size: 1.0625rem;
+  font-weight: 500;
+  letter-spacing: -0.02em;
+  padding: 0 0.5rem 0 0.15rem;
+  display: flex;
+  align-items: center;
 }
 
 .dashboard-breadcrumb {

@@ -27,9 +27,9 @@ class ChatsController < ApplicationController
     @message = Message.new
     if @chat.dashboard_card.present? && @chat.last_enriched_at.nil?
       DbEnrichmentJob.perform_later(@chat.product, @chat.dashboard_card.title, chat: @chat)
-    elsif @chat.dashboard_card.present? && @chat.last_enriched_at < 24.hours.ago
+    elsif @chat.dashboard_card.present? && @chat.last_enriched_at < 1.hour.ago
       DbEnrichmentJob.perform_later(@chat.product, @chat.dashboard_card.title, chat: @chat)
-    elsif !@chat.last_enriched_at.nil? && @chat.last_enriched_at < 24.hours.ago
+    elsif !@chat.last_enriched_at.nil? && @chat.last_enriched_at < 1.hour.ago
       DbEnrichmentJob.perform_later(@chat.product, @chat.title, chat: @chat)
     end
 

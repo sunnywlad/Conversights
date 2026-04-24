@@ -44,7 +44,7 @@ class DashboardRefreshService
     if first_time
       YoutubeCommentsService.new(@product, query: "#{@product.name} #{@product.brand}", target: 25).fetch_raw
     else
-      stale_cards = cards.select { |c| c.last_enriched_at < 24.hours.ago }
+      stale_cards = cards.select { |c| c.last_enriched_at < 1.hour.ago }
       stale_cards.flat_map do |card|
         YoutubeCommentsService.new(@product, query: "#{@product.name} #{@product.brand} #{card.title}").fetch_raw
       end.uniq
