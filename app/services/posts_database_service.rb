@@ -6,10 +6,13 @@ class PostsDatabaseService
 
   def call
     return [] unless @product
-    return [] unless Post.where(product_id: @product.id).where.not(embedding: nil).exists?
 
-    embedding = RubyLLM.embed(@text)
-    Post.where(product_id: @product.id).where.not(embedding: nil).nearest_neighbors(:embedding, embedding.vectors, distance: "euclidean").first(10)
+    if Post.where(product_id: @product.id).where.not(embedding: nil).exists?
+      embedding = RubyLLM.embed(@text)
+      Post.where(product_id: @product.id).where.not(embedding: nil).nearest_neighbors(:embedding, embedding.vectors, distance: "euclidean").first(10)
+    else
+      Post.where(product_id: @product.id).order(created_at: :desc).limit(20)
+    end
   rescue StandardError => e
     Rails.logger.error "PostsDatabaseService error: #{e.message}"
     []
